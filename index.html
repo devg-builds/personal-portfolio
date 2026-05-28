@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devansh Gupta | Cloud, DevOps & Cyber Security Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090a0f',
+                        terminalGreen: '#00ff66',
+                        panelCard: '#121420',
+                        accentBlue: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .cyber-border {
+            position: relative;
+        }
+        .cyber-border::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scan-effect::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans min-h-screen flex flex-col justify-between relative scan-effect">
+
+    <header class="p-6 max-w-6xl mx-auto w-full flex justify-between items-center border-b border-gray-800/60 sticky top-0 bg-darkBg/90 backdrop-blur-md z-50">
+        <div class="text-md font-mono tracking-widest text-accentBlue font-bold">&lt;DEV_G&gt;</div>
+        <nav class="space-x-8 hidden md:flex font-mono text-xs uppercase tracking-wider">
+            <a href="#about" class="hover:text-accentBlue transition text-gray-400">About</a>
+            <a href="#experience" class="hover:text-accentBlue transition text-gray-400">Experience</a>
+            <a href="#projects" class="hover:text-accentBlue transition text-gray-400">Projects</a>
+            <a href="#awards" class="hover:text-accentBlue transition text-gray-400">Achievements</a>
+            <a href="#contact" class="hover:text-accentBlue transition text-gray-400">Contact</a>
+        </nav>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto px-6 w-full">
+        
+        <section class="py-20 md:py-28 flex flex-col md:flex-row gap-12 items-center min-h-[80vh]">
+            <div class="w-full md:w-2/3 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-accentBlue/10 border border-accentBlue/30 text-accentBlue font-mono text-xs rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-accentBlue animate-pulse"></span> Available for Research & Global Technical Initiatives
+                </div>
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white">
+                    Devansh Gupta
+                </h1>
+                <p class="text-md md:text-xl font-mono text-gray-400">
+                    CTO @ Finspire | Cloud & Cyber Security Engineer | Independent Physics Researcher
+                </p>
+                <p class="text-sm md:text-base text-gray-400 max-w-2xl leading-relaxed font-light">
+                    I construct production-grade cloud architectures, engineer defense systems against modern threat scripts, and model advanced orbital mechanic systems. Grounded in computational precision, I scale technological solutions designed to address complex problems globally.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#projects" class="bg-accentBlue hover:bg-blue-600 text-white font-mono text-xs uppercase px-6 py-3 tracking-wider rounded transition">
+                        View Repositories
+                    </a>
+                    <a href="#contact" class="border border-gray-700 hover:border-gray-500 text-gray-300 font-mono text-xs uppercase px-6 py-3 tracking-wider rounded transition">
+                        Initialize Connection
+                    </a>
+                </div>
+            </div>
+            <div class="w-full md:w-1/3 bg-panelCard border border-gray-800 p-6 font-mono text-xs rounded shadow-2xl relative overflow-hidden">
+                <div class="flex items-center gap-2 pb-4 border-b border-gray-800 mb-4 text-gray-500">
+                    <span class="w-3 h-3 rounded-full bg-red-500/40"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-500/40"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-500/40"></span>
+                    <span class="ml-2 text-[10px]">devg-system-core.sh</span>
+                </div>
+                <p class="text-accentBlue mb-1"># Profile Metrics Dashboard</p>
+                <p class="text-gray-400">STATUS: <span class="text-terminalGreen">ACTIVE</span></p>
+                <p class="text-gray-400">EDUCATION: <span class="text-white">DPS - CS Student</span></p>
+                <p class="text-gray-400">G-CLOUD BADGES: <span class="text-yellow-400 font-bold">111+ Verified</span></p>
+                <p class="text-gray-400">GCAF STATUS: <span class="text-purple-400 font-bold">Rank #1 Global</span></p>
+                <p class="text-gray-400 mb-4">DUOLINGO ENGLISH: <span class="text-white font-bold">130 Score</span></p>
+                <div class="p-3 bg-darkBg/60 border border-gray-800/80 rounded text-gray-400 text-[11px] leading-relaxed">
+                    <span class="text-terminalGreen">devg_core$</span> grep -o "discipline" && grep -o "precision"
+                    <br><span class="text-gray-200">"Habits shaped by Karate & Abacus, applied systematically to architecture."</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 border-t border-gray-900 scroll-mt-16">
+            <h2 class="text-xl font-bold font-mono text-white mb-8 flex items-center gap-3">
+                <span class="text-accentBlue">01.</span> Execution Strategy
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12 text-sm text-gray-400 leading-relaxed font-light">
+                <div class="space-y-4">
+                    <p>
+                        I grew up competing in Karate and Abacus—learning early that discipline and precision aren't just skills, they're structural habits. Those same models quietly followed me into computing infrastructure. By 4th grade, computer architecture completely captured my attention.
+                    </p>
+                    <p>
+                        It took me through writing an independent research paper on satellite orbital mechanics, executing two intense Cyber Security internships (including direct tactical collaboration with the Gurugram Police), and establishing highly structured technical setups.
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <p>
+                        Currently, I serve as the founding <strong class="text-white font-semibold">Chief Technology Officer at Finspire</strong>, a non-profit dedicated to engineering accessible financial literacy tools across India. I am also heavily invested in Model United Nations because structural engineering without global perspective is incomplete.
+                    </p>
+                    <p class="border-l-2 border-accentBlue pl-4 italic bg-panelCard/40 py-2 rounded-r">
+                        "The world's hardest problems need architects who can design systems with technological precision, while thinking with true global impact."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-12 bg-panelCard/40 border border-gray-900 p-8 rounded">
+            <h3 class="text-xs font-mono tracking-widest text-accentBlue uppercase mb-6">Verified Architecture Toolkit</h3>
+            <div class="flex flex-wrap gap-3 font-mono text-xs">
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Cybersecurity & Defenses</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Cloud Infrastructure Architecture</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">DevOps & CI/CD Pipelines</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Product Lifecycle Management</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Identity & Access Management (IAM)</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Machine Learning & BigQuery ML</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Full-Stack Web Engineering</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Python / Backend Logic</span>
+                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Linux Terminal Automation</span>
+            </div>
+        </section>
+
+        <section id="experience" class="py-20 border-t border-gray-900 scroll-mt-16">
+            <h2 class="text-xl font-bold font-mono text-white mb-12 flex items-center gap-3">
+                <span class="text-accentBlue">02.</span> Professional Deployments
+            </h2>
+            <div class="space-y-12 border-l border-gray-800 pl-6 ml-2">
+                <div class="relative">
+                    <span class="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-accentBlue ring-4 ring-darkBg"></span>
+                    <div class="flex flex-col md:flex-row md:justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-md font-bold text-white">Chief Technology Officer (CTO)</h3>
+                            <p class="text-xs font-mono text-accentBlue">Finspire &bull; Enterprise Tech Division</p>
+                        </div>
+                        <span class="text-xs font-mono text-gray-500 mt-1 md:mt-0">May 2026 — Present</span>
+                    </div>
+                    <ul class="text-xs text-gray-400 space-y-2 list-disc pl-4 font-light leading-relaxed">
+                        <li>Directing the complete technological infrastructure, roadmap development, and digital system vision as a foundational leadership team member.</li>
+                        <li>Designing and shipping student-facing web platforms and learning infrastructure from the ground up to support large-scale financial education across India.</li>
+                        <li>Ensuring enterprise data integrity, secure encryption networks, and highly scalable system uptimes.</li>
+                    </ul>
+                </div>
+                <div class="relative">
+                    <span class="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-purple-500 ring-4 ring-darkBg"></span>
+                    <div class="flex flex-col md:flex-row md:justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-md font-bold text-white">Cyber Security Intern & Ambassador</h3>
+                            <p class="text-xs font-mono text-purple-400">Haryana Police &bull; Cyber Crime Prevention Group</p>
+                        </div>
+                        <span class="text-xs font-mono text-gray-500 mt-1 md:mt-0">May 2026 &bull; On-Site Project</span>
+                    </div>
+                    <ul class="text-xs text-gray-400 space-y-2 list-disc pl-4 font-light leading-relaxed">
+                        <li>Selected as one of the highly limited cohort student candidates across the Delhi-NCR sector to collaborate directly on state cyber security defense frameworks.</li>
+                        <li>Trained under top cybersecurity authorities on active digital threat prevention, dark web vector mapping, and incident management protocols.</li>
+                    </ul>
+                </div>
+                <div class="relative">
+                    <span class="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-yellow-500 ring-4 ring-darkBg"></span>
+                    <div class="flex flex-col md:flex-row md:justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-md font-bold text-white">Google Cloud Facilitator Lead</h3>
+                            <p class="text-xs font-mono text-yellow-400">Google Cloud Arcade Facilitator Program</p>
+                        </div>
+                        <span class="text-xs font-mono text-gray-500 mt-1 md:mt-0">Apr 2025 — Jul 2025</span>
+                    </div>
+                    <ul class="text-xs text-gray-400 space-y-2 list-disc pl-4 font-light leading-relaxed">
+                        <li>Executed and mapped 111+ Google Cloud Skill Badges spanning DevOps architecture, IAM security compliance, serverless infrastructure, and BigQuery ML tracking nodes.</li>
+                        <li>Ranked #1 globally on the official Google Cloud Arcade Challenger platform leaderboard.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-20 border-t border-gray-900 scroll-mt-16">
+            <h2 class="text-xl font-bold font-mono text-white mb-8 flex items-center gap-3">
+                <span class="text-accentBlue">03.</span> System Repositories
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6 font-mono">
+                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-xs text-accentBlue font-bold">[ FULL-STACK PRODUCTION ]</span>
+                            <span class="text-[10px] text-gray-500">Live Production</span>
+                        </div>
+                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-accentBlue transition">Covara Global Engine</h3>
+                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
+                            A modern, high-performance web engineering solution engineered to host and manage premium high-converting digital interfaces for small business operators. Decoupled and hooked straight into PostgreSQL serverless structures.
+                        </p>
+                    </div>
+                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
+                        <span>Stack: Supabase / Tailwind / JS Engine</span>
+                        <a href="https://devg-builds.github.io/covara-website/" target="_blank" class="text-accentBlue underline font-bold">Runtime &rarr;</a>
+                    </div>
+                </div>
+                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-xs text-yellow-400 font-bold">[ INTELLIGENT ROUTING ]</span>
+                            <span class="text-[10px] text-gray-500">Oct 2025</span>
+                        </div>
+                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-yellow-400 transition">AI Study Planner</h3>
+                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
+                            Built an algorithmic adaptive scheduling engine utilizing Python Flask backend matrices. Evaluates custom constraints, academic deadlines, and learning behaviors to dynamically balance and optimize user routines.
+                        </p>
+                    </div>
+                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
+                        <span>Stack: Flask / NoSQL Data Cache / Python</span>
+                        <span class="text-gray-600">Active Architecture</span>
+                    </div>
+                </div>
+                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-xs text-purple-400 font-bold">[ COMPUTATIONAL PHYSICS ]</span>
+                            <span class="text-[10px] text-gray-500">Research Asset</span>
+                        </div>
+                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-purple-400 transition">Satellite Orbital Simulation</h3>
+                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
+                            Independent theoretical research and algorithmic math modeling studying how precise microscopic velocity transitions influence long-range satellite trajectory shifts and orbital flight paths.
+                        </p>
+                    </div>
+                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
+                        <span>Paper: Mechanics & Physics Matrix</span>
+                        <span class="text-purple-400">Published Asset</span>
+                    </div>
+                </div>
+                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-xs text-terminalGreen font-bold">[ AUTONOMOUS SYSTEMS ]</span>
+                            <span class="text-[10px] text-gray-500">Hardware Layer</span>
+                        </div>
+                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-terminalGreen transition">Cypher Nova</h3>
+                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
+                            An autonomous sensor-integrated physical vehicle built to map local surroundings using deep spatial detection nodes. Implements obstacle avoidance algorithms for real-time track navigation.
+                        </p>
+                    </div>
+                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
+                        <span>Stack: Robotics / Proximity Arrays</span>
+                        <span class="text-gray-600">Hardware Asset</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="awards" class="py-20 border-t border-gray-900 scroll-mt-16">
+            <h2 class="text-xl font-bold font-mono text-white mb-8 flex items-center gap-3">
+                <span class="text-accentBlue">04.</span> Validated Credentials
+            </h2>
+            <div class="grid md:grid-cols-3 gap-6 font-mono text-xs">
+                <div class="p-4 bg-panelCard border border-gray-800/80 rounded">
+                    <span class="text-accentBlue font-bold text-[10px] block mb-1">GLOBAL RANK #1</span>
+                    <p class="text-white font-bold mb-2">Google Cloud Arcade Champion</p>
+                    <p class="text-[11px] text-gray-400 font-sans font-light">Surpassed global competitors inside specific Cloud Skill challenge milestones tracking complex IAM, pipeline, and container deployments.</p>
+                </div>
+                <div class="p-4 bg-panelCard border border-gray-800/80 rounded">
+                    <span class="text-purple-400 font-bold text-[10px] block mb-1">MILITARY CADET CORPS</span>
+                    <p class="text-white font-bold mb-2">NCC 'A' Certificate (Navy Wing)</p>
+                    <p class="text-[11px] text-gray-400 font-sans font-light">Completed two full assessment years of highly disciplined naval physical operations training, passing explicit written engineering examinations.</p>
+                </div>
+                <div class="p-4 bg-panelCard border border-gray-800/80 rounded">
+                    <span class="text-yellow-400 font-bold text-[10px] block mb-1">GRAPH DATABASE SYSTEM</span>
+                    <p class="text-white font-bold mb-2">Neo4j Certified Professional</p>
+                    <p class="text-[11px] text-gray-400 font-sans font-light">Formally validated operational knowledge of graph database data patterns, structural querying, and performance architecture modeling.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 border-t border-gray-900 scroll-mt-16 mb-12">
+            <div class="text-center max-w-xl mx-auto space-y-4">
+                <h2 class="text-2xl font-bold font-mono text-white">Initialize Network Handshake</h2>
+                <p class="text-sm text-gray-400 font-light leading-relaxed">
+                    Hiring managers, research directors, and engineering teams can ping my system directly. Let's build robust infrastructure together.
+                </p>
+                <div class="pt-4 font-mono text-xs text-accentBlue flex flex-col gap-2 bg-panelCard/40 border border-gray-800/60 p-4 rounded max-w-md mx-auto">
+                    <div>SYSTEM MAIL: <a href="mailto:devg191209@gmail.com" class="text-white hover:underline">devg191209@gmail.com</a></div>
+                    <div>COMMS DIRECT: <a href="tel:+919891170905" class="text-white hover:underline">+91 9891170905</a></div>
+                </div>
+                <div class="pt-6 flex justify-center gap-6 font-mono text-xs text-gray-500">
+                    <a href="https://github.com/DevG19120..." target="_blank" class="hover:text-white transition">&lt; GitHub Repository &gt;</a>
+                    <a href="#" class="hover:text-accentBlue transition font-bold">&lt; LinkedIn Verified Network &gt;</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="p-6 text-center font-mono text-[10px] text-gray-600 border-t border-gray-900/60">
+        &copy; 2026 Devansh Gupta // RUNTIME CONFIG: COMPLETE // SECURITY STATUS: SYSTEM OPTIMIZED
+    </footer>
+
+</body>
+</html>
