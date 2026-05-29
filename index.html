@@ -1,309 +1,865 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devansh Gupta | Cloud, DevOps & Cyber Security Engineer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#090a0f',
-                        terminalGreen: '#00ff66',
-                        panelCard: '#121420',
-                        accentBlue: '#3b82f6',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        html { scroll-behavior: smooth; }
-        .cyber-border {
-            position: relative;
-        }
-        .cyber-border::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px;
-            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-        }
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-        .scan-effect::before {
-            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devansh Gupta — Cloud, DevOps & Cyber Security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #0A1628;
+    --navy2:   #0F1E38;
+    --blue:    #1A6EFF;
+    --blue2:   #4D94FF;
+    --cyan:    #00C2D4;
+    --white:   #F4F7FF;
+    --muted:   #8A9BBF;
+    --card:    #111D33;
+    --border:  rgba(26,110,255,0.18);
+    --glow:    rgba(26,110,255,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── GRADIENT MESH BG ── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(26,110,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 80% 80%, rgba(0,194,212,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(26,110,255,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(10,22,40,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--blue); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(26,110,255,0.1);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--blue2);
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+    width: fit-content;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s ease forwards;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.35s ease forwards;
+  }
+  .hero-name .accent { color: var(--blue); }
+  .hero-role {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    color: var(--muted);
+    margin-bottom: 1.8rem;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s ease forwards;
+  }
+  .hero-role strong { color: var(--white); font-weight: 500; }
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.65s ease forwards;
+  }
+  .hero-ctas {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.8s ease forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--blue);
+    color: #fff;
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 0 rgba(26,110,255,0);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(26,110,255,0.35);
+  }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--white);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--blue2);
+    background: var(--glow);
+  }
+
+  /* Stats bar */
+  .hero-stats {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.7s 1s ease forwards;
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--blue); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.03em; }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 7rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--blue2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after {
+    content: '';
+    display: block;
+    height: 1px; width: 3rem;
+    background: var(--border);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--muted);
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1.2rem;
+  }
+  .about-text p strong { color: var(--white); font-weight: 500; }
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .about-card-item { display: flex; flex-direction: column; gap: 0.3rem; }
+  .about-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--blue2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .about-card-value { font-size: 0.95rem; color: var(--white); font-weight: 400; }
+  .about-card-divider { height: 1px; background: var(--border); }
+
+  /* ── EXPERIENCE ── */
+  #experience {
+    padding: 7rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .exp-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
+  .exp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    transition: border-color 0.25s, transform 0.25s;
+    cursor: default;
+  }
+  .exp-card:hover {
+    border-color: rgba(26,110,255,0.4);
+    transform: translateX(4px);
+  }
+  .exp-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: var(--glow);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .exp-main { display: flex; flex-direction: column; gap: 0.4rem; }
+  .exp-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .exp-org { font-size: 0.88rem; color: var(--blue2); font-weight: 400; }
+  .exp-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-top: 0.3rem; }
+  .exp-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .exp-badge {
+    display: inline-flex; align-items: center;
+    background: rgba(26,110,255,0.1);
+    border: 1px solid rgba(26,110,255,0.2);
+    color: var(--blue2);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 0.5rem;
+    width: fit-content;
+  }
+  .exp-badge.green {
+    background: rgba(0,194,100,0.08);
+    border-color: rgba(0,194,100,0.2);
+    color: #4ddb90;
+  }
+
+  /* ── PROJECTS ── */
+  #projects {
+    padding: 7rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .proj-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: border-color 0.25s, transform 0.2s;
+    text-decoration: none;
+  }
+  .proj-card:hover {
+    border-color: rgba(26,110,255,0.4);
+    transform: translateY(-4px);
+  }
+  .proj-card-top { display: flex; justify-content: space-between; align-items: start; }
+  .proj-icon { font-size: 1.8rem; }
+  .proj-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .proj-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.3;
+  }
+  .proj-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
+  .proj-stack { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .stack-tag {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .proj-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--blue2);
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    margin-top: auto;
+    transition: gap 0.2s;
+  }
+  .proj-link:hover { gap: 0.7rem; }
+
+  /* ── CREDENTIALS ── */
+  #credentials {
+    padding: 7rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .cred-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+  .cred-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+    transition: border-color 0.2s;
+  }
+  .cred-card:hover { border-color: rgba(26,110,255,0.35); }
+  .cred-top { display: flex; align-items: center; gap: 0.7rem; }
+  .cred-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cred-dot.blue { background: var(--blue); }
+  .cred-dot.cyan { background: var(--cyan); }
+  .cred-dot.gold { background: #F5A623; }
+  .cred-name { font-size: 0.9rem; font-weight: 500; color: var(--white); line-height: 1.3; }
+  .cred-issuer { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── CONTACT ── */
+  #contact {
+    padding: 7rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .contact-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-box::before {
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 60%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  }
+  .contact-box h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .contact-box p { color: var(--muted); max-width: 480px; margin: 0 auto 2.5rem; font-size: 1rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 400;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .contact-link:hover { border-color: var(--blue2); background: var(--glow); }
+  .contact-link.primary { background: var(--blue); border-color: var(--blue); }
+  .contact-link.primary:hover { background: #2a7aff; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--white); }
+
+  /* ── SCROLL ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero, #about, #experience, #projects, #credentials, #contact { padding: 5rem 1.5rem 3rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-card { grid-template-columns: auto 1fr; }
+    .exp-date { display: none; }
+    .contact-box { padding: 2.5rem 1.5rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+
+  /* ── CUSTOM SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
 </head>
-<body class="bg-darkBg text-gray-100 font-sans min-h-screen flex flex-col justify-between relative scan-effect">
+<body>
 
-    <header class="p-6 max-w-6xl mx-auto w-full flex justify-between items-center border-b border-gray-800/60 sticky top-0 bg-darkBg/90 backdrop-blur-md z-50">
-        <div class="text-md font-mono tracking-widest text-accentBlue font-bold">&lt;DEV_G&gt;</div>
-        <nav class="space-x-8 hidden md:flex font-mono text-xs uppercase tracking-wider">
-            <a href="#about" class="hover:text-accentBlue transition text-gray-400">About</a>
-            <a href="#experience" class="hover:text-accentBlue transition text-gray-400">Experience</a>
-            <a href="#projects" class="hover:text-accentBlue transition text-gray-400">Projects</a>
-            <a href="#awards" class="hover:text-accentBlue transition text-gray-400">Achievements</a>
-            <a href="#contact" class="hover:text-accentBlue transition text-gray-400">Contact</a>
-        </nav>
-    </header>
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Dev<span>G</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#credentials">Credentials</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-    <main class="flex-grow max-w-5xl mx-auto px-6 w-full">
-        
-        <section class="py-20 md:py-28 flex flex-col md:flex-row gap-12 items-center min-h-[80vh]">
-            <div class="w-full md:w-2/3 space-y-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-accentBlue/10 border border-accentBlue/30 text-accentBlue font-mono text-xs rounded-full">
-                    <span class="w-2 h-2 rounded-full bg-accentBlue animate-pulse"></span> Available for Research & Global Technical Initiatives
-                </div>
-                <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white">
-                    Devansh Gupta
-                </h1>
-                <p class="text-md md:text-xl font-mono text-gray-400">
-                    CTO @ Finspire | Cloud & Cyber Security Engineer | Independent Physics Researcher
-                </p>
-                <p class="text-sm md:text-base text-gray-400 max-w-2xl leading-relaxed font-light">
-                    I construct production-grade cloud architectures, engineer defense systems against modern threat scripts, and model advanced orbital mechanic systems. Grounded in computational precision, I scale technological solutions designed to address complex problems globally.
-                </p>
-                <div class="flex flex-wrap gap-4 pt-4">
-                    <a href="#projects" class="bg-accentBlue hover:bg-blue-600 text-white font-mono text-xs uppercase px-6 py-3 tracking-wider rounded transition">
-                        View Repositories
-                    </a>
-                    <a href="#contact" class="border border-gray-700 hover:border-gray-500 text-gray-300 font-mono text-xs uppercase px-6 py-3 tracking-wider rounded transition">
-                        Initialize Connection
-                    </a>
-                </div>
-            </div>
-            <div class="w-full md:w-1/3 bg-panelCard border border-gray-800 p-6 font-mono text-xs rounded shadow-2xl relative overflow-hidden">
-                <div class="flex items-center gap-2 pb-4 border-b border-gray-800 mb-4 text-gray-500">
-                    <span class="w-3 h-3 rounded-full bg-red-500/40"></span>
-                    <span class="w-3 h-3 rounded-full bg-yellow-500/40"></span>
-                    <span class="w-3 h-3 rounded-full bg-green-500/40"></span>
-                    <span class="ml-2 text-[10px]">devg-system-core.sh</span>
-                </div>
-                <p class="text-accentBlue mb-1"># Profile Metrics Dashboard</p>
-                <p class="text-gray-400">STATUS: <span class="text-terminalGreen">ACTIVE</span></p>
-                <p class="text-gray-400">EDUCATION: <span class="text-white">DPS - CS Student</span></p>
-                <p class="text-gray-400">G-CLOUD BADGES: <span class="text-yellow-400 font-bold">111+ Verified</span></p>
-                <p class="text-gray-400">GCAF STATUS: <span class="text-purple-400 font-bold">Rank #1 Global</span></p>
-                <p class="text-gray-400 mb-4">DUOLINGO ENGLISH: <span class="text-white font-bold">130 Score</span></p>
-                <div class="p-3 bg-darkBg/60 border border-gray-800/80 rounded text-gray-400 text-[11px] leading-relaxed">
-                    <span class="text-terminalGreen">devg_core$</span> grep -o "discipline" && grep -o "precision"
-                    <br><span class="text-gray-200">"Habits shaped by Karate & Abacus, applied systematically to architecture."</span>
-                </div>
-            </div>
-        </section>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">Available for Research &amp; Global Technical Initiatives</div>
+  <h1 class="hero-name">Devansh<br><span class="accent">Gupta.</span></h1>
+  <p class="hero-role">
+    <strong>Founding CTO @ Finspire</strong> &nbsp;·&nbsp; Cloud &amp; Cyber Security &nbsp;·&nbsp; Independent Physics Researcher &nbsp;·&nbsp; DPS Faridabad '28
+  </p>
+  <p class="hero-desc">
+    Class 11 CS student building real technology — from cloud infrastructure to cyber security to educational platforms. Preparing for BS Computer Science abroad in 2028.
+  </p>
+  <div class="hero-ctas">
+    <a href="#experience" class="btn-primary">View Experience ↓</a>
+    <a href="https://linkedin.com/in/devansh-gupta-377b2a360" target="_blank" class="btn-secondary">LinkedIn ↗</a>
+    <a href="https://github.com/devg-builds" target="_blank" class="btn-secondary">GitHub ↗</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">111<span>+</span></div>
+      <div class="stat-label">Cloud Skill Badges</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">Rank <span>#1</span></div>
+      <div class="stat-label">Google Cloud Arcade Global</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><span>2</span></div>
+      <div class="stat-label">Cyber Security Internships</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15<span>+</span></div>
+      <div class="stat-label">Certifications</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num"><span>6</span></div>
+      <div class="stat-label">Page Research Paper</div>
+    </div>
+  </div>
+</section>
 
-        <section id="about" class="py-20 border-t border-gray-900 scroll-mt-16">
-            <h2 class="text-xl font-bold font-mono text-white mb-8 flex items-center gap-3">
-                <span class="text-accentBlue">01.</span> Execution Strategy
-            </h2>
-            <div class="grid md:grid-cols-2 gap-12 text-sm text-gray-400 leading-relaxed font-light">
-                <div class="space-y-4">
-                    <p>
-                        I grew up competing in Karate and Abacus—learning early that discipline and precision aren't just skills, they're structural habits. Those same models quietly followed me into computing infrastructure. By 4th grade, computer architecture completely captured my attention.
-                    </p>
-                    <p>
-                        It took me through writing an independent research paper on satellite orbital mechanics, executing two intense Cyber Security internships (including direct tactical collaboration with the Gurugram Police), and establishing highly structured technical setups.
-                    </p>
-                </div>
-                <div class="space-y-4">
-                    <p>
-                        Currently, I serve as the founding <strong class="text-white font-semibold">Chief Technology Officer at Finspire</strong>, a non-profit dedicated to engineering accessible financial literacy tools across India. I am also heavily invested in Model United Nations because structural engineering without global perspective is incomplete.
-                    </p>
-                    <p class="border-l-2 border-accentBlue pl-4 italic bg-panelCard/40 py-2 rounded-r">
-                        "The world's hardest problems need architects who can design systems with technological precision, while thinking with true global impact."
-                    </p>
-                </div>
-            </div>
-        </section>
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 — About</div>
+  <h2 class="section-title reveal">The story so far.</h2>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>I didn't choose Computer Science because someone told me to. I chose it because I genuinely couldn't stay away from it. It started young — competitive Karate at regional level, Abacus at national level — disciplines that taught me focus and precision. Those same habits quietly followed me into technology.</p>
+      <p>By 4th grade, computers had me hooked. That curiosity compounded over the years into something real — 111+ Google Cloud skill badges, an independent research paper on satellite orbital mechanics I wrote in Class 10, and two Cyber Security internships before finishing Class 11.</p>
+      <p>Right now I'm the <strong>founding CTO at Finspire</strong> — a non-profit building financial literacy tools for underprivileged students across India. I also believe technology without perspective is incomplete, which is why Model United Nations matters to me alongside everything else.</p>
+      <p>Currently in Class 11 at DPS Faridabad. Preparing for a BS Computer Science abroad in 2028. Still curious. Still building.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-card-item">
+        <span class="about-card-label">Current Role</span>
+        <span class="about-card-value">Founding CTO — Finspire</span>
+      </div>
+      <div class="about-card-divider"></div>
+      <div class="about-card-item">
+        <span class="about-card-label">School</span>
+        <span class="about-card-value">Delhi Public School, Faridabad</span>
+      </div>
+      <div class="about-card-divider"></div>
+      <div class="about-card-item">
+        <span class="about-card-label">Grade</span>
+        <span class="about-card-value">Class 11 — PCM + CS (CBSE)</span>
+      </div>
+      <div class="about-card-divider"></div>
+      <div class="about-card-item">
+        <span class="about-card-label">Focus Areas</span>
+        <span class="about-card-value">Cloud Computing · Cyber Security · DevOps · Physics Research</span>
+      </div>
+      <div class="about-card-divider"></div>
+      <div class="about-card-item">
+        <span class="about-card-label">Target</span>
+        <span class="about-card-value">BS Computer Science Abroad — 2028</span>
+      </div>
+      <div class="about-card-divider"></div>
+      <div class="about-card-item">
+        <span class="about-card-label">Location</span>
+        <span class="about-card-value">Faridabad, Haryana, India</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <section class="py-12 bg-panelCard/40 border border-gray-900 p-8 rounded">
-            <h3 class="text-xs font-mono tracking-widest text-accentBlue uppercase mb-6">Verified Architecture Toolkit</h3>
-            <div class="flex flex-wrap gap-3 font-mono text-xs">
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Cybersecurity & Defenses</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Cloud Infrastructure Architecture</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">DevOps & CI/CD Pipelines</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Product Lifecycle Management</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Identity & Access Management (IAM)</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Machine Learning & BigQuery ML</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Full-Stack Web Engineering</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Python / Backend Logic</span>
-                <span class="px-3 py-1.5 bg-darkBg border border-gray-800 text-gray-300 rounded">Linux Terminal Automation</span>
-            </div>
-        </section>
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">02 — Experience</div>
+  <h2 class="section-title reveal">What I've built and done.</h2>
+  <div class="exp-list">
 
-        <section id="experience" class="py-20 border-t border-gray-900 scroll-mt-16">
-            <h2 class="text-xl font-bold font-mono text-white mb-12 flex items-center gap-3">
-                <span class="text-accentBlue">02.</span> Professional Deployments
-            </h2>
-            <div class="space-y-12 border-l border-gray-800 pl-6 ml-2">
-                <div class="relative">
-                    <span class="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-accentBlue ring-4 ring-darkBg"></span>
-                    <div class="flex flex-col md:flex-row md:justify-between items-start mb-2">
-                        <div>
-                            <h3 class="text-md font-bold text-white">Chief Technology Officer (CTO)</h3>
-                            <p class="text-xs font-mono text-accentBlue">Finspire &bull; Enterprise Tech Division</p>
-                        </div>
-                        <span class="text-xs font-mono text-gray-500 mt-1 md:mt-0">May 2026 — Present</span>
-                    </div>
-                    <ul class="text-xs text-gray-400 space-y-2 list-disc pl-4 font-light leading-relaxed">
-                        <li>Directing the complete technological infrastructure, roadmap development, and digital system vision as a foundational leadership team member.</li>
-                        <li>Designing and shipping student-facing web platforms and learning infrastructure from the ground up to support large-scale financial education across India.</li>
-                        <li>Ensuring enterprise data integrity, secure encryption networks, and highly scalable system uptimes.</li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <span class="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-purple-500 ring-4 ring-darkBg"></span>
-                    <div class="flex flex-col md:flex-row md:justify-between items-start mb-2">
-                        <div>
-                            <h3 class="text-md font-bold text-white">Cyber Security Intern & Ambassador</h3>
-                            <p class="text-xs font-mono text-purple-400">Haryana Police &bull; Cyber Crime Prevention Group</p>
-                        </div>
-                        <span class="text-xs font-mono text-gray-500 mt-1 md:mt-0">May 2026 &bull; On-Site Project</span>
-                    </div>
-                    <ul class="text-xs text-gray-400 space-y-2 list-disc pl-4 font-light leading-relaxed">
-                        <li>Selected as one of the highly limited cohort student candidates across the Delhi-NCR sector to collaborate directly on state cyber security defense frameworks.</li>
-                        <li>Trained under top cybersecurity authorities on active digital threat prevention, dark web vector mapping, and incident management protocols.</li>
-                    </ul>
-                </div>
-                <div class="relative">
-                    <span class="absolute -left-[31px] top-1.5 w-2 h-2 rounded-full bg-yellow-500 ring-4 ring-darkBg"></span>
-                    <div class="flex flex-col md:flex-row md:justify-between items-start mb-2">
-                        <div>
-                            <h3 class="text-md font-bold text-white">Google Cloud Facilitator Lead</h3>
-                            <p class="text-xs font-mono text-yellow-400">Google Cloud Arcade Facilitator Program</p>
-                        </div>
-                        <span class="text-xs font-mono text-gray-500 mt-1 md:mt-0">Apr 2025 — Jul 2025</span>
-                    </div>
-                    <ul class="text-xs text-gray-400 space-y-2 list-disc pl-4 font-light leading-relaxed">
-                        <li>Executed and mapped 111+ Google Cloud Skill Badges spanning DevOps architecture, IAM security compliance, serverless infrastructure, and BigQuery ML tracking nodes.</li>
-                        <li>Ranked #1 globally on the official Google Cloud Arcade Challenger platform leaderboard.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+    <div class="exp-card reveal">
+      <div class="exp-icon">🏗️</div>
+      <div class="exp-main">
+        <div class="exp-title">Chief Technology Officer (Founding)</div>
+        <div class="exp-org">Finspire — EdTech Non-Profit</div>
+        <div class="exp-desc">Leading the complete technology vision and product roadmap for a non-profit making financial literacy accessible to underprivileged students across India. Building digital infrastructure, learning platform, and student-facing applications from the ground up as a founding team member.</div>
+        <span class="exp-badge green">● Active</span>
+      </div>
+      <div class="exp-date">May 2026 — Present</div>
+    </div>
 
-        <section id="projects" class="py-20 border-t border-gray-900 scroll-mt-16">
-            <h2 class="text-xl font-bold font-mono text-white mb-8 flex items-center gap-3">
-                <span class="text-accentBlue">03.</span> System Repositories
-            </h2>
-            <div class="grid md:grid-cols-2 gap-6 font-mono">
-                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-xs text-accentBlue font-bold">[ FULL-STACK PRODUCTION ]</span>
-                            <span class="text-[10px] text-gray-500">Live Production</span>
-                        </div>
-                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-accentBlue transition">Covara Global Engine</h3>
-                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
-                            A modern, high-performance web engineering solution engineered to host and manage premium high-converting digital interfaces for small business operators. Decoupled and hooked straight into PostgreSQL serverless structures.
-                        </p>
-                    </div>
-                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
-                        <span>Stack: Supabase / Tailwind / JS Engine</span>
-                        <a href="https://devg-builds.github.io/covara-website/" target="_blank" class="text-accentBlue underline font-bold">Runtime &rarr;</a>
-                    </div>
-                </div>
-                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-xs text-yellow-400 font-bold">[ INTELLIGENT ROUTING ]</span>
-                            <span class="text-[10px] text-gray-500">Oct 2025</span>
-                        </div>
-                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-yellow-400 transition">AI Study Planner</h3>
-                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
-                            Built an algorithmic adaptive scheduling engine utilizing Python Flask backend matrices. Evaluates custom constraints, academic deadlines, and learning behaviors to dynamically balance and optimize user routines.
-                        </p>
-                    </div>
-                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
-                        <span>Stack: Flask / NoSQL Data Cache / Python</span>
-                        <span class="text-gray-600">Active Architecture</span>
-                    </div>
-                </div>
-                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-xs text-purple-400 font-bold">[ COMPUTATIONAL PHYSICS ]</span>
-                            <span class="text-[10px] text-gray-500">Research Asset</span>
-                        </div>
-                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-purple-400 transition">Satellite Orbital Simulation</h3>
-                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
-                            Independent theoretical research and algorithmic math modeling studying how precise microscopic velocity transitions influence long-range satellite trajectory shifts and orbital flight paths.
-                        </p>
-                    </div>
-                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
-                        <span>Paper: Mechanics & Physics Matrix</span>
-                        <span class="text-purple-400">Published Asset</span>
-                    </div>
-                </div>
-                <div class="border border-gray-800 p-6 bg-panelCard/30 rounded hover:border-accentBlue/60 transition group flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-xs text-terminalGreen font-bold">[ AUTONOMOUS SYSTEMS ]</span>
-                            <span class="text-[10px] text-gray-500">Hardware Layer</span>
-                        </div>
-                        <h3 class="text-md font-bold text-white mb-2 group-hover:text-terminalGreen transition">Cypher Nova</h3>
-                        <p class="text-xs text-gray-400 font-sans font-light leading-relaxed mb-4">
-                            An autonomous sensor-integrated physical vehicle built to map local surroundings using deep spatial detection nodes. Implements obstacle avoidance algorithms for real-time track navigation.
-                        </p>
-                    </div>
-                    <div class="text-[11px] text-gray-500 flex justify-between items-center pt-2 border-t border-gray-900">
-                        <span>Stack: Robotics / Proximity Arrays</span>
-                        <span class="text-gray-600">Hardware Asset</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="exp-card reveal">
+      <div class="exp-icon">🔐</div>
+      <div class="exp-main">
+        <div class="exp-title">Cyber Security Intern — Cyber Ambassador</div>
+        <div class="exp-org">Gurugram Police, Haryana Government</div>
+        <div class="exp-desc">Selected as one of 8 students for the 13th Gurugram Police Cyber Security Summer Internship 2026. Mentored by Dr. Rakshit Tandon — one of India's leading cyber security educators. Trained in cyber security awareness, digital safety, and cyber crime prevention frameworks.</div>
+        <span class="exp-badge">GPCSS 2026</span>
+      </div>
+      <div class="exp-date">May 2026 — Present</div>
+    </div>
 
-        <section id="awards" class="py-20 border-t border-gray-900 scroll-mt-16">
-            <h2 class="text-xl font-bold font-mono text-white mb-8 flex items-center gap-3">
-                <span class="text-accentBlue">04.</span> Validated Credentials
-            </h2>
-            <div class="grid md:grid-cols-3 gap-6 font-mono text-xs">
-                <div class="p-4 bg-panelCard border border-gray-800/80 rounded">
-                    <span class="text-accentBlue font-bold text-[10px] block mb-1">GLOBAL RANK #1</span>
-                    <p class="text-white font-bold mb-2">Google Cloud Arcade Champion</p>
-                    <p class="text-[11px] text-gray-400 font-sans font-light">Surpassed global competitors inside specific Cloud Skill challenge milestones tracking complex IAM, pipeline, and container deployments.</p>
-                </div>
-                <div class="p-4 bg-panelCard border border-gray-800/80 rounded">
-                    <span class="text-purple-400 font-bold text-[10px] block mb-1">MILITARY CADET CORPS</span>
-                    <p class="text-white font-bold mb-2">NCC 'A' Certificate (Navy Wing)</p>
-                    <p class="text-[11px] text-gray-400 font-sans font-light">Completed two full assessment years of highly disciplined naval physical operations training, passing explicit written engineering examinations.</p>
-                </div>
-                <div class="p-4 bg-panelCard border border-gray-800/80 rounded">
-                    <span class="text-yellow-400 font-bold text-[10px] block mb-1">GRAPH DATABASE SYSTEM</span>
-                    <p class="text-white font-bold mb-2">Neo4j Certified Professional</p>
-                    <p class="text-[11px] text-gray-400 font-sans font-light">Formally validated operational knowledge of graph database data patterns, structural querying, and performance architecture modeling.</p>
-                </div>
-            </div>
-        </section>
+    <div class="exp-card reveal">
+      <div class="exp-icon">🛡️</div>
+      <div class="exp-main">
+        <div class="exp-title">Cyber Security Intern</div>
+        <div class="exp-org">IOF — Internship Opportunities Forum, DPS Faridabad</div>
+        <div class="exp-desc">Completed a structured 15-day Cyber Security internship organised through DPS Faridabad's Internship Opportunities Forum. Formal offer letter and completion certificate upon programme conclusion.</div>
+        <span class="exp-badge">15-Day Programme</span>
+      </div>
+      <div class="exp-date">May 15–30, 2026</div>
+    </div>
 
-        <section id="contact" class="py-20 border-t border-gray-900 scroll-mt-16 mb-12">
-            <div class="text-center max-w-xl mx-auto space-y-4">
-                <h2 class="text-2xl font-bold font-mono text-white">Initialize Network Handshake</h2>
-                <p class="text-sm text-gray-400 font-light leading-relaxed">
-                    Hiring managers, research directors, and engineering teams can ping my system directly. Let's build robust infrastructure together.
-                </p>
-                <div class="pt-4 font-mono text-xs text-accentBlue flex flex-col gap-2 bg-panelCard/40 border border-gray-800/60 p-4 rounded max-w-md mx-auto">
-                    <div>SYSTEM MAIL: <a href="mailto:devg191209@gmail.com" class="text-white hover:underline">devg191209@gmail.com</a></div>
-                    <div>COMMS DIRECT: <a href="tel:+919891170905" class="text-white hover:underline">+91 9891170905</a></div>
-                </div>
-                <div class="pt-6 flex justify-center gap-6 font-mono text-xs text-gray-500">
-                    <a href="https://github.com/DevG19120..." target="_blank" class="hover:text-white transition">&lt; GitHub Repository &gt;</a>
-                    <a href="#" class="hover:text-accentBlue transition font-bold">&lt; LinkedIn Verified Network &gt;</a>
-                </div>
-            </div>
-        </section>
+    <div class="exp-card reveal">
+      <div class="exp-icon">☁️</div>
+      <div class="exp-main">
+        <div class="exp-title">Google Cloud Arcade — Global Rank #1</div>
+        <div class="exp-org">Google Cloud Arcade Facilitator Program (GCAF Cohort 1)</div>
+        <div class="exp-desc">Achieved Global Rank #1 on the Google Cloud Arcade leaderboard, completing 111+ Skill Badges across Cloud Engineering, DevOps, Kubernetes, BigQuery ML, Vertex AI, Firebase, Security Command Center, and CI/CD Pipelines. Earned Champion Milestone — competing against participants 4+ years older.</div>
+        <span class="exp-badge">Champion Milestone</span>
+      </div>
+      <div class="exp-date">Apr — Jul 2025</div>
+    </div>
 
-    </main>
+    <div class="exp-card reveal">
+      <div class="exp-icon">🔭</div>
+      <div class="exp-main">
+        <div class="exp-title">Independent Physics Researcher</div>
+        <div class="exp-org">Self-Initiated — Independent Student Researcher</div>
+        <div class="exp-desc">Authored a formal 6-page research paper on orbital mechanics: "How Small Velocity Changes Shift Satellite Trajectories." Simulated a 650 km LEO orbit, demonstrating that Δv of 5 m/s produces measurable orbital shifts. Written independently in Class 10 with no institutional support.</div>
+        <span class="exp-badge">6-Page Research Paper</span>
+      </div>
+      <div class="exp-date">2024 — Class 10</div>
+    </div>
 
-    <footer class="p-6 text-center font-mono text-[10px] text-gray-600 border-t border-gray-900/60">
-        &copy; 2026 Devansh Gupta // RUNTIME CONFIG: COMPLETE // SECURITY STATUS: SYSTEM OPTIMIZED
-    </footer>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">03 — Projects</div>
+  <h2 class="section-title reveal">Things I've actually built.</h2>
+  <div class="projects-grid">
+
+    <a href="https://devg-builds.github.io/covara-website/" target="_blank" class="proj-card reveal">
+      <div class="proj-card-top">
+        <span class="proj-icon">🌐</span>
+        <span class="proj-type">Full-Stack · Live</span>
+      </div>
+      <div class="proj-name">Covara Website</div>
+      <p class="proj-desc">A modern, live-deployed web solution. Built and shipped to production using JavaScript, Supabase, and Tailwind CSS.</p>
+      <div class="proj-stack">
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">Supabase</span>
+        <span class="stack-tag">Tailwind</span>
+      </div>
+      <span class="proj-link">View Live ↗</span>
+    </a>
+
+    <a href="https://github.com/devg-builds" target="_blank" class="proj-card reveal">
+      <div class="proj-card-top">
+        <span class="proj-icon">🤖</span>
+        <span class="proj-type">AI · Python</span>
+      </div>
+      <div class="proj-name">AI Study Planner</div>
+      <p class="proj-desc">An adaptive scheduling engine that evaluates academic deadlines, constraints, and learning behaviours to dynamically optimise study routines.</p>
+      <div class="proj-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">Flask</span>
+        <span class="stack-tag">NoSQL</span>
+      </div>
+      <span class="proj-link">View on GitHub ↗</span>
+    </a>
+
+    <a href="#" class="proj-card reveal">
+      <div class="proj-card-top">
+        <span class="proj-icon">🛰️</span>
+        <span class="proj-type">Research · Physics</span>
+      </div>
+      <div class="proj-name">Satellite Orbital Simulation</div>
+      <p class="proj-desc">Independent research and computational modelling studying how small velocity changes influence satellite trajectory shifts in Low Earth Orbit.</p>
+      <div class="proj-stack">
+        <span class="stack-tag">Physics</span>
+        <span class="stack-tag">Orbital Mechanics</span>
+        <span class="stack-tag">Research Paper</span>
+      </div>
+      <span class="proj-link">Read Paper ↗</span>
+    </a>
+
+    <a href="#" class="proj-card reveal">
+      <div class="proj-card-top">
+        <span class="proj-icon">🚗</span>
+        <span class="proj-type">Robotics · Hardware</span>
+      </div>
+      <div class="proj-name">Cypher Nova</div>
+      <p class="proj-desc">Autonomous sensor-based vehicle capable of real-time obstacle detection and navigation. Exhibited at DPS Faridabad Annual Science Fest — Certificate of Achievement.</p>
+      <div class="proj-stack">
+        <span class="stack-tag">Robotics</span>
+        <span class="stack-tag">Sensor Arrays</span>
+        <span class="stack-tag">Hardware</span>
+      </div>
+      <span class="proj-link">Science Fest 2025 ↗</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section id="credentials">
+  <div class="section-label">04 — Credentials</div>
+  <h2 class="section-title reveal">Verified achievements.</h2>
+  <div class="cred-grid reveal">
+
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Google Cloud Arcade Global Rank #1</span></div>
+      <div class="cred-issuer">Google Cloud Skills Boost · May 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">NCC 'A' Certificate — Navy Wing</span></div>
+      <div class="cred-issuer">National Cadet Corps, India · 2022–2024</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Neo4j Certified Professional</span></div>
+      <div class="cred-issuer">Neo4j GraphAcademy · July 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Generative AI for All</span></div>
+      <div class="cred-issuer">Infosys Springboard · August 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Python Programming — Grade A+</span></div>
+      <div class="cred-issuer">CodeFobe · March 2026</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Implement CI/CD Pipelines on Google Cloud</span></div>
+      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Deploy Kubernetes Applications on Google Cloud</span></div>
+      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Mitigate Threats with Security Command Center</span></div>
+      <div class="cred-issuer">Google Cloud Skills Boost · May 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Build a Secure Google Cloud Network</span></div>
+      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Explore Generative AI with Gemini API (Vertex AI)</span></div>
+      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Silver Medal — U10, 4th North India GOJU RYU Championship</span></div>
+      <div class="cred-issuer">Goju Ryu Karate Academy · Nov 2017</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Gold Medal — Star Performer</span></div>
+      <div class="cred-issuer">Abacus Academy · Aug 2016</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-box reveal">
+    <h2>Let's connect.</h2>
+    <p>Open to research collaborations, technical conversations, and opportunities aligned with Cloud, Cyber Security, and CS education.</p>
+    <div class="contact-links">
+      <a href="mailto:devg191209@gmail.com" class="contact-link primary">✉ devg191209@gmail.com</a>
+      <a href="https://linkedin.com/in/devansh-gupta-377b2a360" target="_blank" class="contact-link">LinkedIn ↗</a>
+      <a href="https://github.com/devg-builds" target="_blank" class="contact-link">GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Devansh Gupta</span>
+  <span>DPS Faridabad · Class 11 PCM-CS · Faridabad, India</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--white)' : '';
+    });
+  });
+</script>
 
 </body>
 </html>
