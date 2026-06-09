@@ -8,530 +8,361 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy:    #0A1628;
-    --navy2:   #0F1E38;
-    --blue:    #1A6EFF;
-    --blue2:   #4D94FF;
-    --cyan:    #00C2D4;
-    --white:   #F4F7FF;
-    --muted:   #8A9BBF;
-    --card:    #111D33;
-    --border:  rgba(26,110,255,0.18);
-    --glow:    rgba(26,110,255,0.12);
+    --navy:#0A1628;--navy2:#0F1E38;--blue:#1A6EFF;--blue2:#4D94FF;
+    --cyan:#00C2D4;--white:#F4F7FF;--muted:#8A9BBF;--card:#111D33;
+    --border:rgba(26,110,255,0.18);--glow:rgba(26,110,255,0.12);
   }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;
+    font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none;}
 
-  html { scroll-behavior: smooth; }
+  /* PROGRESS BAR */
+  #prog{position:fixed;top:0;left:0;height:2px;width:0;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));z-index:999;}
 
-  body {
-    background: var(--navy);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
+  /* CURSOR */
+  .cur{width:10px;height:10px;background:var(--blue);border-radius:50%;
+    position:fixed;pointer-events:none;z-index:9999;
+    transform:translate(-50%,-50%);mix-blend-mode:difference;
+    transition:width .25s,height .25s;}
+  .cur-ring{width:36px;height:36px;border:1px solid rgba(26,110,255,.5);
+    border-radius:50%;position:fixed;pointer-events:none;z-index:9998;
+    transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;}
+  body:has(a:hover) .cur{width:18px;height:18px;}
+  body:has(a:hover) .cur-ring{width:52px;height:52px;border-color:var(--blue);}
 
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
+  /* NOISE */
+  body::before{content:'';position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:0;opacity:.4;}
 
-  /* ── GRADIENT MESH BG ── */
-  body::after {
-    content: '';
-    position: fixed; inset: 0;
+  /* MESH BG */
+  body::after{content:'';position:fixed;inset:0;
     background:
-      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(26,110,255,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 60% at 80% 80%, rgba(0,194,212,0.06) 0%, transparent 50%),
-      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(26,110,255,0.04) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
+      radial-gradient(ellipse 80% 50% at 20% 10%,rgba(26,110,255,.08) 0%,transparent 60%),
+      radial-gradient(ellipse 60% 60% at 80% 80%,rgba(0,194,212,.06) 0%,transparent 50%);
+    pointer-events:none;z-index:0;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:1.2rem 4rem;transition:all .4s;}
+  nav.scrolled{background:rgba(10,22,40,.88);backdrop-filter:blur(20px);
+    padding:.9rem 4rem;border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;
+    letter-spacing:.04em;color:var(--white);text-decoration:none;}
+  .nav-logo span{color:var(--blue);}
+  .nav-links{display:flex;gap:2.5rem;list-style:none;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:.88rem;
+    font-weight:400;letter-spacing:.03em;transition:color .2s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;
+    height:1px;background:var(--blue);transform:scaleX(0);transition:transform .25s;}
+  .nav-links a:hover{color:var(--white);}
+  .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+  .nav-links a.active{color:var(--white);}
+
+  section{position:relative;z-index:1;}
+
+  /* HERO */
+  #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:8rem 4rem 4rem;max-width:1100px;margin:0 auto;overflow:hidden;}
+
+  /* GHOST BG TEXT */
+  .hero-ghost{position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    font-family:'Syne',sans-serif;font-weight:800;
+    font-size:clamp(100px,18vw,240px);color:transparent;
+    -webkit-text-stroke:1px rgba(26,110,255,.05);
+    white-space:nowrap;pointer-events:none;user-select:none;
+    animation:ghostDrift 20s ease-in-out infinite alternate;z-index:0;}
+  @keyframes ghostDrift{
+    from{transform:translate(-50%,-52%) rotate(-.5deg);}
+    to{transform:translate(-50%,-48%) rotate(.5deg);}
   }
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 4rem;
-    background: rgba(10,22,40,0.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.15rem;
-    letter-spacing: 0.04em;
-    color: var(--white);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--blue); }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 400;
-    letter-spacing: 0.03em;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--white); }
+  .hero-tag{display:inline-flex;align-items:center;gap:.5rem;
+    background:rgba(26,110,255,.1);border:1px solid var(--border);
+    border-radius:100px;padding:.35rem 1rem;
+    font-family:'JetBrains Mono',monospace;font-size:.75rem;
+    color:var(--blue2);letter-spacing:.05em;margin-bottom:2rem;
+    width:fit-content;opacity:0;animation:fadeUp .6s .2s ease forwards;
+    position:relative;z-index:1;}
+  .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;
+    background:var(--cyan);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
 
-  /* ── SECTIONS ── */
-  section { position: relative; z-index: 1; }
+  .hero-name{font-family:'Syne',sans-serif;font-weight:800;
+    font-size:clamp(3rem,7vw,5.5rem);line-height:1;letter-spacing:-.02em;
+    margin-bottom:1.2rem;position:relative;z-index:1;}
+  .hero-name .line{display:block;overflow:hidden;}
+  .hero-name .line span{display:block;opacity:0;transform:translateY(100%);
+    animation:slideUp .9s cubic-bezier(.16,1,.3,1) forwards;}
+  .hero-name .line:nth-child(1) span{animation-delay:.4s;}
+  .hero-name .line:nth-child(2) span{animation-delay:.55s;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(100%);}to{opacity:1;transform:translateY(0);}}
+  .hero-name .accent{color:var(--blue);}
 
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    justify-content: center;
-    padding: 8rem 4rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: rgba(26,110,255,0.1);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 0.35rem 1rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--blue2);
-    letter-spacing: 0.05em;
-    margin-bottom: 2rem;
-    width: fit-content;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.2s ease forwards;
-  }
-  .hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--cyan);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-  .hero-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(3rem, 7vw, 5.5rem);
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.2rem;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.35s ease forwards;
-  }
-  .hero-name .accent { color: var(--blue); }
-  .hero-role {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    font-size: clamp(1rem, 2.2vw, 1.25rem);
-    color: var(--muted);
-    margin-bottom: 1.8rem;
-    max-width: 600px;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.5s ease forwards;
-  }
-  .hero-role strong { color: var(--white); font-weight: 500; }
-  .hero-desc {
-    font-size: 1.05rem;
-    color: var(--muted);
-    max-width: 560px;
-    line-height: 1.8;
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.65s ease forwards;
-  }
-  .hero-ctas {
-    display: flex; gap: 1rem; flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.8s ease forwards;
-  }
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--blue);
-    color: #fff;
-    padding: 0.85rem 2rem;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 0 0 rgba(26,110,255,0);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(26,110,255,0.35);
-  }
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: transparent;
-    color: var(--white);
-    padding: 0.85rem 2rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 400;
-    text-decoration: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .btn-secondary:hover {
-    border-color: var(--blue2);
-    background: var(--glow);
-  }
+  .hero-role{font-family:'DM Sans',sans-serif;font-weight:300;
+    font-size:clamp(1rem,2.2vw,1.25rem);color:var(--muted);
+    margin-bottom:1.8rem;max-width:600px;
+    opacity:0;animation:fadeUp .7s .7s ease forwards;position:relative;z-index:1;}
+  .hero-role strong{color:var(--white);font-weight:500;}
 
-  /* Stats bar */
-  .hero-stats {
-    display: flex; gap: 3rem; flex-wrap: wrap;
-    margin-top: 4rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid var(--border);
-    opacity: 0;
-    animation: fadeUp 0.7s 1s ease forwards;
-  }
-  .stat-item { display: flex; flex-direction: column; gap: 0.2rem; }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1;
-  }
-  .stat-num span { color: var(--blue); }
-  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.03em; }
+  .hero-desc{font-size:1.05rem;color:var(--muted);max-width:560px;
+    line-height:1.8;margin-bottom:2.5rem;
+    opacity:0;animation:fadeUp .7s .85s ease forwards;position:relative;z-index:1;}
 
-  /* ── ABOUT ── */
-  #about {
-    padding: 7rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--blue2);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 0.75rem;
-  }
-  .section-label::after {
-    content: '';
-    display: block;
-    height: 1px; width: 3rem;
-    background: var(--border);
-  }
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: clamp(2rem, 4vw, 3rem);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 2.5rem;
-  }
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 4rem;
-    align-items: start;
-  }
-  .about-text p {
-    color: var(--muted);
-    font-size: 1.02rem;
-    line-height: 1.85;
-    margin-bottom: 1.2rem;
-  }
-  .about-text p strong { color: var(--white); font-weight: 500; }
-  .about-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    display: flex; flex-direction: column; gap: 1.5rem;
-  }
-  .about-card-item { display: flex; flex-direction: column; gap: 0.3rem; }
-  .about-card-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--blue2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .about-card-value { font-size: 0.95rem; color: var(--white); font-weight: 400; }
-  .about-card-divider { height: 1px; background: var(--border); }
+  .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;
+    opacity:0;animation:fadeUp .7s 1s ease forwards;position:relative;z-index:1;}
 
-  /* ── EXPERIENCE ── */
-  #experience {
-    padding: 7rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .exp-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
-  .exp-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem 2.5rem;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1.5rem;
-    align-items: start;
-    transition: border-color 0.25s, transform 0.25s;
-    cursor: default;
-  }
-  .exp-card:hover {
-    border-color: rgba(26,110,255,0.4);
-    transform: translateX(4px);
-  }
-  .exp-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    background: var(--glow);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-  }
-  .exp-main { display: flex; flex-direction: column; gap: 0.4rem; }
-  .exp-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--white);
-  }
-  .exp-org { font-size: 0.88rem; color: var(--blue2); font-weight: 400; }
-  .exp-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-top: 0.3rem; }
-  .exp-date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-  }
-  .exp-badge {
-    display: inline-flex; align-items: center;
-    background: rgba(26,110,255,0.1);
-    border: 1px solid rgba(26,110,255,0.2);
-    color: var(--blue2);
-    font-size: 0.7rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 100px;
-    font-family: 'JetBrains Mono', monospace;
-    margin-top: 0.5rem;
-    width: fit-content;
-  }
-  .exp-badge.green {
-    background: rgba(0,194,100,0.08);
-    border-color: rgba(0,194,100,0.2);
-    color: #4ddb90;
-  }
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;
+    background:var(--blue);color:#fff;padding:.85rem 2rem;border-radius:8px;
+    font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;
+    text-decoration:none;transition:transform .2s,box-shadow .2s;cursor:none;
+    position:relative;overflow:hidden;}
+  .btn-primary::before{content:'';position:absolute;inset:0;
+    background:#2a7aff;transform:translateX(-101%);
+    transition:transform .35s cubic-bezier(.16,1,.3,1);z-index:0;}
+  .btn-primary:hover::before{transform:translateX(0);}
+  .btn-primary span,.btn-primary{position:relative;z-index:1;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(26,110,255,.35);}
 
-  /* ── PROJECTS ── */
-  #projects {
-    padding: 7rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
-  }
-  .proj-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    display: flex; flex-direction: column; gap: 1rem;
-    transition: border-color 0.25s, transform 0.2s;
-    text-decoration: none;
-  }
-  .proj-card:hover {
-    border-color: rgba(26,110,255,0.4);
-    transform: translateY(-4px);
-  }
-  .proj-card-top { display: flex; justify-content: space-between; align-items: start; }
-  .proj-icon { font-size: 1.8rem; }
-  .proj-type {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .proj-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--white);
-    line-height: 1.3;
-  }
-  .proj-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
-  .proj-stack { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
-  .stack-tag {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.7rem;
-    padding: 0.2rem 0.55rem;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .proj-link {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    color: var(--blue2);
-    font-size: 0.82rem;
-    font-weight: 500;
-    text-decoration: none;
-    margin-top: auto;
-    transition: gap 0.2s;
-  }
-  .proj-link:hover { gap: 0.7rem; }
+  .btn-secondary{display:inline-flex;align-items:center;gap:.5rem;
+    background:transparent;color:var(--white);padding:.85rem 2rem;
+    border-radius:8px;border:1px solid var(--border);
+    font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:400;
+    text-decoration:none;transition:border-color .2s,background .2s;cursor:none;}
+  .btn-secondary:hover{border-color:var(--blue2);background:var(--glow);}
 
-  /* ── CREDENTIALS ── */
-  #credentials {
-    padding: 7rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .cred-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-top: 3rem;
-  }
-  .cred-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    display: flex; flex-direction: column; gap: 0.6rem;
-    transition: border-color 0.2s;
-  }
-  .cred-card:hover { border-color: rgba(26,110,255,0.35); }
-  .cred-top { display: flex; align-items: center; gap: 0.7rem; }
-  .cred-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .cred-dot.blue { background: var(--blue); }
-  .cred-dot.cyan { background: var(--cyan); }
-  .cred-dot.gold { background: #F5A623; }
-  .cred-name { font-size: 0.9rem; font-weight: 500; color: var(--white); line-height: 1.3; }
-  .cred-issuer { font-size: 0.78rem; color: var(--muted); }
+  .hero-stats{display:flex;gap:3rem;flex-wrap:wrap;margin-top:4rem;
+    padding-top:2.5rem;border-top:1px solid var(--border);
+    opacity:0;animation:fadeUp .7s 1.2s ease forwards;position:relative;z-index:1;}
+  .stat-item{display:flex;flex-direction:column;gap:.2rem;}
+  .stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;
+    color:var(--white);line-height:1;}
+  .stat-num span{color:var(--blue);}
+  .stat-label{font-size:.8rem;color:var(--muted);letter-spacing:.03em;}
 
-  /* ── CONTACT ── */
-  #contact {
-    padding: 7rem 4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .contact-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 4rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .contact-box::before {
-    content: '';
-    position: absolute; top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 60%; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--blue), transparent);
-  }
-  .contact-box h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-  .contact-box p { color: var(--muted); max-width: 480px; margin: 0 auto 2.5rem; font-size: 1rem; }
-  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-  .contact-link {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    padding: 0.8rem 1.6rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    color: var(--white);
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 400;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .contact-link:hover { border-color: var(--blue2); background: var(--glow); }
-  .contact-link.primary { background: var(--blue); border-color: var(--blue); }
-  .contact-link.primary:hover { background: #2a7aff; }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem 4rem;
-    display: flex; align-items: center; justify-content: space-between;
-    max-width: 1100px;
-    margin: 0 auto;
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-  footer a { color: var(--muted); text-decoration: none; }
-  footer a:hover { color: var(--white); }
+  /* MARQUEE */
+  .marquee-wrap{position:relative;z-index:2;
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    padding:1rem 0;overflow:hidden;background:rgba(26,110,255,.02);}
+  .marquee-track{display:flex;gap:2.5rem;width:max-content;
+    animation:marquee 22s linear infinite;}
+  .mq-item{display:flex;align-items:center;gap:.7rem;white-space:nowrap;
+    font-family:'JetBrains Mono',monospace;font-size:.72rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .mq-dot{color:var(--blue);font-size:.5rem;}
+  @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-  /* ── SCROLL ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.65s ease, transform 0.65s ease;
-  }
-  .reveal.visible { opacity: 1; transform: none; }
+  /* SECTIONS */
+  #about,#experience,#projects,#credentials,#contact{
+    padding:7rem 4rem;max-width:1100px;margin:0 auto;}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;
+    color:var(--blue2);letter-spacing:.12em;text-transform:uppercase;
+    margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;}
+  .section-label::after{content:'';display:block;height:1px;width:3rem;background:var(--border);}
+  .section-title{font-family:'Syne',sans-serif;font-weight:700;
+    font-size:clamp(2rem,4vw,3rem);letter-spacing:-.02em;line-height:1.1;margin-bottom:2.5rem;}
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    #hero, #about, #experience, #projects, #credentials, #contact { padding: 5rem 1.5rem 3rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .exp-card { grid-template-columns: auto 1fr; }
-    .exp-date { display: none; }
-    .contact-box { padding: 2.5rem 1.5rem; }
-    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
-  }
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:4rem;align-items:start;}
+  .about-text p{color:var(--muted);font-size:1.02rem;line-height:1.85;margin-bottom:1.2rem;}
+  .about-text p strong{color:var(--white);font-weight:500;}
+  .about-card{background:var(--card);border:1px solid var(--border);
+    border-radius:16px;padding:2rem;display:flex;flex-direction:column;gap:1.5rem;}
+  .about-card-item{display:flex;flex-direction:column;gap:.3rem;}
+  .about-card-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;
+    color:var(--blue2);letter-spacing:.1em;text-transform:uppercase;}
+  .about-card-value{font-size:.95rem;color:var(--white);font-weight:400;}
+  .about-card-divider{height:1px;background:var(--border);}
 
-  /* ── CUSTOM SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--navy); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  /* LIVE BADGES */
+  .live-strip{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.5rem;}
+  .live-badge{display:inline-flex;align-items:center;gap:.5rem;
+    background:rgba(0,194,100,.06);border:1px solid rgba(0,194,100,.2);
+    border-radius:100px;padding:.3rem .9rem;font-size:.75rem;color:#4ddb90;
+    font-family:'JetBrains Mono',monospace;letter-spacing:.04em;}
+  .live-badge::before{content:'';width:5px;height:5px;border-radius:50%;
+    background:#4ddb90;animation:pulse 2s infinite;flex-shrink:0;}
+
+  /* SKILL BARS */
+  .skills-wrap{margin-top:2rem;}
+  .sk-label-row{font-family:'JetBrains Mono',monospace;font-size:.7rem;
+    color:var(--blue2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .sk-item{margin-bottom:1.2rem;}
+  .sk-top{display:flex;justify-content:space-between;margin-bottom:.35rem;}
+  .sk-name{font-size:.83rem;color:var(--muted);}
+  .sk-pct{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--blue2);}
+  .sk-track{height:2px;background:rgba(26,110,255,.12);border-radius:2px;overflow:hidden;}
+  .sk-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));
+    width:0;border-radius:2px;transition:width 1.3s cubic-bezier(.16,1,.3,1);}
+
+  /* TIMELINE */
+  .timeline{margin-top:3rem;position:relative;}
+  .timeline::before{content:'';position:absolute;left:20px;top:8px;bottom:8px;
+    width:1px;background:linear-gradient(180deg,var(--blue),transparent);}
+  .tl-item{display:grid;grid-template-columns:44px 1fr;gap:1.5rem;
+    margin-bottom:2.5rem;}
+  .tl-dot{width:10px;height:10px;border-radius:50%;background:var(--navy2);
+    border:2px solid var(--blue);position:relative;top:6px;left:15px;
+    flex-shrink:0;z-index:1;transition:background .3s,box-shadow .3s;}
+  .tl-item:hover .tl-dot{background:var(--blue);box-shadow:0 0 12px rgba(26,110,255,.5);}
+  .tl-card{background:var(--card);border:1px solid var(--border);
+    border-radius:16px;padding:1.8rem 2.2rem;
+    transition:border-color .25s,transform .25s;}
+  .tl-item:hover .tl-card{border-color:rgba(26,110,255,.35);transform:translateX(4px);}
+  .tl-head{display:flex;justify-content:space-between;align-items:start;
+    margin-bottom:.3rem;flex-wrap:wrap;gap:.5rem;}
+  .tl-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:600;color:var(--white);}
+  .tl-date{font-family:'JetBrains Mono',monospace;font-size:.7rem;
+    color:var(--muted);letter-spacing:.04em;white-space:nowrap;}
+  .tl-org{font-size:.85rem;color:var(--blue2);margin-bottom:.7rem;}
+  .tl-desc{font-size:.85rem;color:var(--muted);line-height:1.65;}
+  .tl-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;}
+  .tl-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;
+    padding:.18rem .6rem;border-radius:100px;letter-spacing:.04em;}
+  .tl-badge.b{background:rgba(26,110,255,.1);border:1px solid rgba(26,110,255,.2);color:var(--blue2);}
+  .tl-badge.g{background:rgba(0,194,100,.08);border:1px solid rgba(0,194,100,.2);color:#4ddb90;}
+  .tl-badge.gold{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);color:#F5A623;}
+  .tl-badge.c{background:rgba(0,194,212,.08);border:1px solid rgba(0,194,212,.2);color:var(--cyan);}
+
+  /* RESEARCH SECTION */
+  #research{padding:7rem 4rem;max-width:1100px;margin:0 auto;}
+  .research-card{background:var(--card);border:1px solid var(--border);
+    border-radius:20px;padding:2.2rem;margin-bottom:1.2rem;
+    position:relative;overflow:hidden;transition:border-color .25s,transform .25s;}
+  .research-card::before{content:'';position:absolute;top:0;left:0;right:0;
+    height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));
+    transform:scaleX(0);transition:transform .4s ease;transform-origin:left;}
+  .research-card:hover::before{transform:scaleX(1);}
+  .research-card:hover{border-color:rgba(26,110,255,.35);transform:translateY(-2px);}
+  .r-status{display:inline-flex;align-items:center;gap:.5rem;
+    font-family:'JetBrains Mono',monospace;font-size:.68rem;
+    letter-spacing:.08em;padding:.22rem .7rem;border-radius:100px;margin-bottom:.9rem;}
+  .r-status.review{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);color:#F5A623;}
+  .r-status.review::before{content:'';width:5px;height:5px;border-radius:50%;
+    background:#F5A623;animation:pulse 2s infinite;}
+  .r-status.done{background:rgba(0,194,100,.08);border:1px solid rgba(0,194,100,.25);color:#4ddb90;}
+  .r-status.done::before{content:'✓';color:#4ddb90;font-size:.65rem;}
+  .r-title{font-family:'Syne',sans-serif;font-size:1.02rem;font-weight:600;
+    color:var(--white);margin-bottom:.4rem;line-height:1.4;}
+  .r-journal{font-size:.82rem;color:var(--blue2);margin-bottom:.7rem;}
+  .r-desc{font-size:.84rem;color:var(--muted);line-height:1.65;}
+
+  /* PROJECTS */
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:1.5rem;margin-top:3rem;}
+  .proj-card{background:var(--card);border:1px solid var(--border);
+    border-radius:16px;padding:2rem;display:flex;flex-direction:column;gap:1rem;
+    transition:border-color .25s,transform .2s;text-decoration:none;
+    position:relative;overflow:hidden;cursor:none;}
+  .proj-card::after{content:'';position:absolute;inset:0;
+    background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%),rgba(26,110,255,.05),transparent 60%);
+    opacity:0;transition:opacity .3s;pointer-events:none;}
+  .proj-card:hover::after{opacity:1;}
+  .proj-card:hover{border-color:rgba(26,110,255,.4);transform:translateY(-4px);}
+  .proj-card-top{display:flex;justify-content:space-between;align-items:start;}
+  .proj-icon{font-size:1.8rem;}
+  .proj-type{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);
+    letter-spacing:.06em;text-transform:uppercase;}
+  .proj-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:600;
+    color:var(--white);line-height:1.3;}
+  .proj-desc{font-size:.87rem;color:var(--muted);line-height:1.65;}
+  .proj-stack{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;}
+  .stack-tag{background:rgba(255,255,255,.04);border:1px solid var(--border);
+    color:var(--muted);font-size:.7rem;padding:.2rem .55rem;
+    border-radius:6px;font-family:'JetBrains Mono',monospace;}
+  .proj-link{display:inline-flex;align-items:center;gap:.4rem;color:var(--blue2);
+    font-size:.82rem;font-weight:500;text-decoration:none;
+    margin-top:auto;transition:gap .2s;}
+  .proj-link:hover{gap:.7rem;}
+
+  /* CREDENTIALS */
+  .cred-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:1rem;margin-top:3rem;}
+  .cred-card{background:var(--card);border:1px solid var(--border);
+    border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;gap:.6rem;
+    transition:border-color .2s,transform .2s;position:relative;overflow:hidden;cursor:none;}
+  .cred-card::after{content:'';position:absolute;inset:0;
+    background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(26,110,255,.05),transparent 60%);
+    opacity:0;transition:opacity .3s;pointer-events:none;}
+  .cred-card:hover::after{opacity:1;}
+  .cred-card:hover{border-color:rgba(26,110,255,.35);transform:translateY(-2px);}
+  .cred-top{display:flex;align-items:center;gap:.7rem;}
+  .cred-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .cred-dot.blue{background:var(--blue);}
+  .cred-dot.cyan{background:var(--cyan);}
+  .cred-dot.gold{background:#F5A623;}
+  .cred-name{font-size:.9rem;font-weight:500;color:var(--white);line-height:1.3;}
+  .cred-issuer{font-size:.78rem;color:var(--muted);}
+
+  /* CONTACT */
+  .contact-box{background:var(--card);border:1px solid var(--border);
+    border-radius:24px;padding:4rem;text-align:center;
+    position:relative;overflow:hidden;}
+  .contact-box::before{content:'';position:absolute;top:0;left:50%;
+    transform:translateX(-50%);width:60%;height:1px;
+    background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+  .contact-box::after{content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(26,110,255,.06),transparent 70%);
+    pointer-events:none;}
+  .contact-box h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);
+    font-weight:700;letter-spacing:-.02em;margin-bottom:1rem;position:relative;z-index:1;}
+  .contact-box p{color:var(--muted);max-width:480px;margin:0 auto 2.5rem;
+    font-size:1rem;position:relative;z-index:1;}
+  .contact-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;position:relative;z-index:1;}
+  .contact-link{display:inline-flex;align-items:center;gap:.6rem;
+    padding:.8rem 1.6rem;border-radius:8px;border:1px solid var(--border);
+    color:var(--white);text-decoration:none;font-size:.88rem;font-weight:400;
+    transition:border-color .2s,background .2s;cursor:none;}
+  .contact-link:hover{border-color:var(--blue2);background:var(--glow);}
+  .contact-link.primary{background:var(--blue);border-color:var(--blue);}
+  .contact-link.primary:hover{background:#2a7aff;}
+
+  footer{border-top:1px solid var(--border);padding:2rem 4rem;
+    display:flex;align-items:center;justify-content:space-between;
+    max-width:1100px;margin:0 auto;font-size:.82rem;color:var(--muted);}
+  footer a{color:var(--muted);text-decoration:none;}
+  footer a:hover{color:var(--white);}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+  .reveal.visible{opacity:1;transform:none;}
+  .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}
+  .d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+  @media(max-width:768px){
+    nav{padding:1rem 1.5rem;}
+    .nav-links{display:none;}
+    #hero,#about,#experience,#projects,#credentials,#contact,#research{padding:5rem 1.5rem 3rem;}
+    .about-grid{grid-template-columns:1fr;gap:2rem;}
+    .tl-item{grid-template-columns:36px 1fr;}
+    .contact-box{padding:2.5rem 1.5rem;}
+    footer{flex-direction:column;gap:.5rem;text-align:center;}
+  }
+  ::-webkit-scrollbar{width:3px;}
+  ::-webkit-scrollbar-track{background:var(--navy);}
+  ::-webkit-scrollbar-thumb{background:rgba(26,110,255,.4);border-radius:2px;}
 </style>
 </head>
 <body>
 
+<div id="prog"></div>
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="ring"></div>
+
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <a href="#hero" class="nav-logo">Dev<span>G</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#research">Research</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#credentials">Credentials</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -540,13 +371,17 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-tag">Available for Research &amp; Global Technical Initiatives</div>
-  <h1 class="hero-name">Devansh<br><span class="accent">Gupta.</span></h1>
+  <div class="hero-ghost" aria-hidden="true">DEVG</div>
+  <div class="hero-tag">CTO @ Finspire · Cyber Security Intern · NHSJS Peer Review</div>
+  <h1 class="hero-name">
+    <span class="line"><span>Devansh</span></span>
+    <span class="line"><span><span class="accent">Gupta.</span></span></span>
+  </h1>
   <p class="hero-role">
-    <strong>Founding CTO @ Finspire</strong> &nbsp;·&nbsp; Cloud &amp; Cyber Security &nbsp;·&nbsp; Independent Physics Researcher &nbsp;·&nbsp; DPS Faridabad '28
+    <strong>CTO @ Finspire</strong> &nbsp;·&nbsp; Cloud &amp; Cyber Security &nbsp;·&nbsp; Independent Physics Researcher &nbsp;·&nbsp; DPS Faridabad
   </p>
   <p class="hero-desc">
-    Class 11 CS student building real technology — from cloud infrastructure to cyber security to educational platforms. Preparing for BS Computer Science abroad in 2028.
+    Class 11 CS student building at the intersection of cloud infrastructure, cyber security, and physics research. Two internships. Two research papers. One mission — build things that matter.
   </p>
   <div class="hero-ctas">
     <a href="#experience" class="btn-primary">View Experience ↓</a>
@@ -555,7 +390,7 @@
   </div>
   <div class="hero-stats">
     <div class="stat-item">
-      <div class="stat-num">111<span>+</span></div>
+      <div class="stat-num" data-count="111">0</div>
       <div class="stat-label">Cloud Skill Badges</div>
     </div>
     <div class="stat-item">
@@ -567,249 +402,245 @@
       <div class="stat-label">Cyber Security Internships</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">15<span>+</span></div>
-      <div class="stat-label">Certifications</div>
+      <div class="stat-num"><span>2</span></div>
+      <div class="stat-label">Research Papers</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num"><span>6</span></div>
-      <div class="stat-label">Page Research Paper</div>
+      <div class="stat-num">15<span>+</span></div>
+      <div class="stat-label">Certifications</div>
     </div>
   </div>
 </section>
 
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="mq-item"><span class="mq-dot">●</span>Google Cloud Arcade Rank #1</span>
+    <span class="mq-item"><span class="mq-dot">●</span>Gurugram Police Cyber Ambassador</span>
+    <span class="mq-item"><span class="mq-dot">●</span>CTO @ Finspire</span>
+    <span class="mq-item"><span class="mq-dot">●</span>NHSJS Peer Review Active</span>
+    <span class="mq-item"><span class="mq-dot">●</span>111+ GCP Badges</span>
+    <span class="mq-item"><span class="mq-dot">●</span>NCC Navy Wing</span>
+    <span class="mq-item"><span class="mq-dot">●</span>Neo4j Certified</span>
+    <span class="mq-item"><span class="mq-dot">●</span>sci-MI Applicant</span>
+    <span class="mq-item"><span class="mq-dot">●</span>DPS Faridabad Student Council</span>
+    <span class="mq-item"><span class="mq-dot">●</span>Google Cloud Arcade Rank #1</span>
+    <span class="mq-item"><span class="mq-dot">●</span>Gurugram Police Cyber Ambassador</span>
+    <span class="mq-item"><span class="mq-dot">●</span>CTO @ Finspire</span>
+    <span class="mq-item"><span class="mq-dot">●</span>NHSJS Peer Review Active</span>
+    <span class="mq-item"><span class="mq-dot">●</span>111+ GCP Badges</span>
+    <span class="mq-item"><span class="mq-dot">●</span>NCC Navy Wing</span>
+    <span class="mq-item"><span class="mq-dot">●</span>Neo4j Certified</span>
+    <span class="mq-item"><span class="mq-dot">●</span>sci-MI Applicant</span>
+    <span class="mq-item"><span class="mq-dot">●</span>DPS Faridabad Student Council</span>
+  </div>
+</div>
+
 <!-- ABOUT -->
 <section id="about">
-  <div class="section-label">01 — About</div>
+  <div class="section-label reveal">01 — About</div>
   <h2 class="section-title reveal">The story so far.</h2>
-  <div class="about-grid reveal">
-    <div class="about-text">
-      <p>I didn't choose Computer Science because someone told me to. I chose it because I genuinely couldn't stay away from it. It started young — competitive Karate at regional level, Abacus at national level — disciplines that taught me focus and precision. Those same habits quietly followed me into technology.</p>
-      <p>By 4th grade, computers had me hooked. That curiosity compounded over the years into something real — 111+ Google Cloud skill badges, an independent research paper on satellite orbital mechanics I wrote in Class 10, and two Cyber Security internships before finishing Class 11.</p>
-      <p>Right now I'm the <strong>founding CTO at Finspire</strong> — a non-profit building financial literacy tools for underprivileged students across India. I also believe technology without perspective is incomplete, which is why Model United Nations matters to me alongside everything else.</p>
-      <p>Currently in Class 11 at DPS Faridabad. Preparing for a BS Computer Science abroad in 2028. Still curious. Still building.</p>
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="about-text">
+        <p>I didn't choose Computer Science because someone told me to. I chose it because I genuinely couldn't stay away from it. Started young — competitive Karate at regional level, Abacus at national level — disciplines that built focus and precision that quietly followed me into technology.</p>
+        <p>By 4th grade, computers had me hooked. That curiosity compounded into something real — 111+ Google Cloud skill badges, two independent research papers, two Cyber Security internships, and a CTO role — all before finishing Class 11.</p>
+        <p>Right now I'm the <strong>CTO at Finspire</strong> — a non-profit building financial literacy tools for underprivileged students across India. I also believe technology without perspective is incomplete — Model United Nations and NCC Navy Wing are how I learn to lead and think globally.</p>
+      </div>
+      <div class="live-strip">
+        <span class="live-badge">CTO @ Finspire</span>
+        <span class="live-badge">Cyber Ambassador · Gurugram Police</span>
+        <span class="live-badge">NHSJS Peer Review</span>
+      </div>
+      <div class="skills-wrap">
+        <div class="sk-label-row">Technical Proficiency</div>
+        <div class="sk-item">
+          <div class="sk-top"><span class="sk-name">Google Cloud Platform & DevOps</span><span class="sk-pct">95%</span></div>
+          <div class="sk-track"><div class="sk-fill" data-w="95"></div></div>
+        </div>
+        <div class="sk-item">
+          <div class="sk-top"><span class="sk-name">Cyber Security</span><span class="sk-pct">82%</span></div>
+          <div class="sk-track"><div class="sk-fill" data-w="82"></div></div>
+        </div>
+        <div class="sk-item">
+          <div class="sk-top"><span class="sk-name">Python & Programming</span><span class="sk-pct">78%</span></div>
+          <div class="sk-track"><div class="sk-fill" data-w="78"></div></div>
+        </div>
+        <div class="sk-item">
+          <div class="sk-top"><span class="sk-name">AI / Machine Learning</span><span class="sk-pct">70%</span></div>
+          <div class="sk-track"><div class="sk-fill" data-w="70"></div></div>
+        </div>
+        <div class="sk-item">
+          <div class="sk-top"><span class="sk-name">Physics Research</span><span class="sk-pct">75%</span></div>
+          <div class="sk-track"><div class="sk-fill" data-w="75"></div></div>
+        </div>
+      </div>
     </div>
-    <div class="about-card">
-      <div class="about-card-item">
-        <span class="about-card-label">Current Role</span>
-        <span class="about-card-value">Founding CTO — Finspire</span>
-      </div>
-      <div class="about-card-divider"></div>
-      <div class="about-card-item">
-        <span class="about-card-label">School</span>
-        <span class="about-card-value">Delhi Public School, Faridabad</span>
-      </div>
-      <div class="about-card-divider"></div>
-      <div class="about-card-item">
-        <span class="about-card-label">Grade</span>
-        <span class="about-card-value">Class 11 — PCM + CS (CBSE)</span>
-      </div>
-      <div class="about-card-divider"></div>
-      <div class="about-card-item">
-        <span class="about-card-label">Focus Areas</span>
-        <span class="about-card-value">Cloud Computing · Cyber Security · DevOps · Physics Research</span>
-      </div>
-      <div class="about-card-divider"></div>
-      <div class="about-card-item">
-        <span class="about-card-label">Target</span>
-        <span class="about-card-value">BS Computer Science Abroad — 2028</span>
-      </div>
-      <div class="about-card-divider"></div>
-      <div class="about-card-item">
-        <span class="about-card-label">Location</span>
-        <span class="about-card-value">Faridabad, Haryana, India</span>
+    <div class="reveal d2">
+      <div class="about-card">
+        <div class="about-card-item">
+          <span class="about-card-label">Current Role</span>
+          <span class="about-card-value">CTO — Finspire (EdTech Non-Profit)</span>
+        </div>
+        <div class="about-card-divider"></div>
+        <div class="about-card-item">
+          <span class="about-card-label">School</span>
+          <span class="about-card-value">Delhi Public School, Faridabad</span>
+        </div>
+        <div class="about-card-divider"></div>
+        <div class="about-card-item">
+          <span class="about-card-label">Grade</span>
+          <span class="about-card-value">Class 11 — PCM + CS (CBSE)</span>
+        </div>
+        <div class="about-card-divider"></div>
+        <div class="about-card-item">
+          <span class="about-card-label">Class 10 Boards</span>
+          <span class="about-card-value">90% Overall · English 96% · IT 92%</span>
+        </div>
+        <div class="about-card-divider"></div>
+        <div class="about-card-item">
+          <span class="about-card-label">Focus Areas</span>
+          <span class="about-card-value">Cloud · Cyber Security · DevOps · Physics</span>
+        </div>
+        <div class="about-card-divider"></div>
+        <div class="about-card-item">
+          <span class="about-card-label">Location</span>
+          <span class="about-card-value">Faridabad, Haryana, India</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- EXPERIENCE -->
-<section id="experience">
-  <div class="section-label">02 — Experience</div>
+<section id="experience" style="background:rgba(0,0,0,.12);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px;margin:0 auto;padding:7rem 4rem;">
+  <div class="section-label reveal">02 — Experience</div>
   <h2 class="section-title reveal">What I've built and done.</h2>
-  <div class="exp-list">
-
-    <div class="exp-card reveal">
-      <div class="exp-icon">🏗️</div>
-      <div class="exp-main">
-        <div class="exp-title">Chief Technology Officer (Founding)</div>
-        <div class="exp-org">Finspire — EdTech Non-Profit</div>
-        <div class="exp-desc">Leading the complete technology vision and product roadmap for a non-profit making financial literacy accessible to underprivileged students across India. Building digital infrastructure, learning platform, and student-facing applications from the ground up as a founding team member.</div>
-        <span class="exp-badge green">● Active</span>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-head"><div class="tl-title">Chief Technology Officer</div><div class="tl-date">May 2026 — Present</div></div>
+        <div class="tl-org">Finspire — EdTech Non-Profit</div>
+        <div class="tl-desc">Leading the complete technology vision and product roadmap for a non-profit making financial literacy accessible to underprivileged students across India. Building digital infrastructure, learning platform, and student-facing applications from the ground up.</div>
+        <div class="tl-badges"><span class="tl-badge g">● Active</span><span class="tl-badge b">EdTech</span><span class="tl-badge b">Non-Profit</span></div>
       </div>
-      <div class="exp-date">May 2026 — Present</div>
     </div>
-
-    <div class="exp-card reveal">
-      <div class="exp-icon">🔐</div>
-      <div class="exp-main">
-        <div class="exp-title">Cyber Security Intern — Cyber Ambassador</div>
-        <div class="exp-org">Gurugram Police, Haryana Government</div>
-        <div class="exp-desc">Selected as one of 8 students for the 13th Gurugram Police Cyber Security Summer Internship 2026. Mentored by Dr. Rakshit Tandon — one of India's leading cyber security educators. Trained in cyber security awareness, digital safety, and cyber crime prevention frameworks.</div>
-        <span class="exp-badge">GPCSS 2026</span>
+    <div class="tl-item reveal d1">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-head"><div class="tl-title">Cyber Security Intern — Cyber Ambassador</div><div class="tl-date">May 2026 — Present</div></div>
+        <div class="tl-org">Gurugram Police, Haryana Government · 13th GPCSS 2026</div>
+        <div class="tl-desc">Selected as one of 8 students nationally for the 13th Gurugram Police Cyber Security Summer Internship 2026. Mentored by Dr. Rakshit Tandon. Trained in cyber threat prevention, digital safety, and cyber crime intervention frameworks.</div>
+        <div class="tl-badges"><span class="tl-badge g">● Active</span><span class="tl-badge gold">1 of 8 Selected</span><span class="tl-badge b">GPCSS 2026</span></div>
       </div>
-      <div class="exp-date">May 2026 — Present</div>
     </div>
-
-    <div class="exp-card reveal">
-      <div class="exp-icon">🛡️</div>
-      <div class="exp-main">
-        <div class="exp-title">Cyber Security Intern</div>
-        <div class="exp-org">IOF — Internship Opportunities Forum, DPS Faridabad</div>
-        <div class="exp-desc">Completed a structured 15-day Cyber Security internship organised through DPS Faridabad's Internship Opportunities Forum. Formal offer letter and completion certificate upon programme conclusion.</div>
-        <span class="exp-badge">15-Day Programme</span>
+    <div class="tl-item reveal d2">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-head"><div class="tl-title">Cyber Security Intern</div><div class="tl-date">May 15–30, 2026</div></div>
+        <div class="tl-org">IOF — Internship Opportunities Forum, DPS Faridabad</div>
+        <div class="tl-desc">Completed a structured 15-day Cyber Security internship through DPS Faridabad's Internship Opportunities Forum. Formal offer letter received, completion certificate awarded.</div>
+        <div class="tl-badges"><span class="tl-badge b">15-Day Programme</span><span class="tl-badge c">Certified</span></div>
       </div>
-      <div class="exp-date">May 15–30, 2026</div>
     </div>
-
-    <div class="exp-card reveal">
-      <div class="exp-icon">☁️</div>
-      <div class="exp-main">
-        <div class="exp-title">Google Cloud Arcade — Global Rank #1</div>
-        <div class="exp-org">Google Cloud Arcade Facilitator Program (GCAF Cohort 1)</div>
-        <div class="exp-desc">Achieved Global Rank #1 on the Google Cloud Arcade leaderboard, completing 111+ Skill Badges across Cloud Engineering, DevOps, Kubernetes, BigQuery ML, Vertex AI, Firebase, Security Command Center, and CI/CD Pipelines. Earned Champion Milestone — competing against participants 4+ years older.</div>
-        <span class="exp-badge">Champion Milestone</span>
+    <div class="tl-item reveal d3">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-head"><div class="tl-title">Google Cloud Arcade — Global Rank #1</div><div class="tl-date">Apr — Jul 2025</div></div>
+        <div class="tl-org">Google Cloud Arcade Facilitator Program (GCAF Cohort 1)</div>
+        <div class="tl-desc">Achieved Global Rank #1 on the leaderboard competing against participants 4+ years older. Completed 111+ Skill Badges across Cloud Engineering, DevOps, Kubernetes, BigQuery ML, Vertex AI, Firebase, Security Command Center, and CI/CD. Earned Champion Milestone.</div>
+        <div class="tl-badges"><span class="tl-badge gold">Rank #1 Global</span><span class="tl-badge b">111+ Badges</span><span class="tl-badge c">Champion Milestone</span></div>
       </div>
-      <div class="exp-date">Apr — Jul 2025</div>
     </div>
-
-    <div class="exp-card reveal">
-      <div class="exp-icon">🔭</div>
-      <div class="exp-main">
-        <div class="exp-title">Independent Physics Researcher</div>
-        <div class="exp-org">Self-Initiated — Independent Student Researcher</div>
-        <div class="exp-desc">Authored a formal 6-page research paper on orbital mechanics: "How Small Velocity Changes Shift Satellite Trajectories." Simulated a 650 km LEO orbit, demonstrating that Δv of 5 m/s produces measurable orbital shifts. Written independently in Class 10 with no institutional support.</div>
-        <span class="exp-badge">6-Page Research Paper</span>
+    <div class="tl-item reveal d4">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-head"><div class="tl-title">Student Council Member</div><div class="tl-date">2025 — Present</div></div>
+        <div class="tl-org">Delhi Public School, Sector-19, Faridabad</div>
+        <div class="tl-desc">Selected for DPS Faridabad Student Council — participating in school governance, community initiatives, and institutional leadership.</div>
+        <div class="tl-badges"><span class="tl-badge b">Leadership</span></div>
       </div>
-      <div class="exp-date">2024 — Class 10</div>
     </div>
+  </div>
+  </div>
+</section>
 
+<!-- RESEARCH -->
+<section id="research">
+  <div class="section-label reveal">03 — Research</div>
+  <h2 class="section-title reveal">Independent academic work.</h2>
+  <p class="reveal" style="color:var(--muted);max-width:520px;margin-bottom:2.5rem;font-size:1rem;">Physics and Computer Science aren't separate disciplines to me — they're two languages describing the same world.</p>
+  <div class="research-card reveal">
+    <div class="r-status review">Under Formal Peer Review</div>
+    <div class="r-title">Orbital Perturbation Dynamics in Low Earth Orbit: A Comprehensive Multi-Force Framework for Satellite Lifetime Prediction and Trajectory Analysis</div>
+    <div class="r-journal">National High School Journal of Science (NHSJS) · Submitted June 2026</div>
+    <div class="r-desc">A multi-force computational framework extending beyond the two-body problem — incorporating J₂ perturbation, atmospheric drag, solar radiation pressure, and luni-solar gravity. Integrates RK4 numerical integration with three LEO case studies. Currently undergoing formal peer review — standard 8-week timeline.</div>
+  </div>
+  <div class="research-card reveal d1">
+    <div class="r-status done">Completed — Class 10</div>
+    <div class="r-title">Orbital Mechanics to Study How Small Velocity Changes Shift Satellite Trajectories</div>
+    <div class="r-journal">Independent Student Researcher · 2024</div>
+    <div class="r-desc">Formal 6-page research paper simulating a 650 km circular Low Earth Orbit. Analysed anti-normal and radial-inward burns on satellite inclination and eccentricity. Demonstrated Δv of 5 m/s produces measurable orbital trajectory shifts. Written independently in Class 10 with no institutional support.</div>
   </div>
 </section>
 
 <!-- PROJECTS -->
-<section id="projects">
-  <div class="section-label">03 — Projects</div>
+<section id="projects" style="background:rgba(0,0,0,.12);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div style="max-width:1100px;margin:0 auto;padding:7rem 4rem;">
+  <div class="section-label reveal">04 — Projects</div>
   <h2 class="section-title reveal">Things I've actually built.</h2>
   <div class="projects-grid">
-
     <a href="https://devg-builds.github.io/covara-website/" target="_blank" class="proj-card reveal">
-      <div class="proj-card-top">
-        <span class="proj-icon">🌐</span>
-        <span class="proj-type">Full-Stack · Live</span>
-      </div>
-      <div class="proj-name">Covara Website</div>
-      <p class="proj-desc">A modern, live-deployed web solution. Built and shipped to production using JavaScript, Supabase, and Tailwind CSS.</p>
-      <div class="proj-stack">
-        <span class="stack-tag">JavaScript</span>
-        <span class="stack-tag">Supabase</span>
-        <span class="stack-tag">Tailwind</span>
-      </div>
+      <div class="proj-card-top"><span class="proj-icon">🌐</span><span class="proj-type">Full-Stack · Live</span></div>
+      <div class="proj-name">Covara Global</div>
+      <p class="proj-desc">Live web design services platform. Custom-built and deployed using JavaScript, Supabase, and Tailwind CSS.</p>
+      <div class="proj-stack"><span class="stack-tag">JavaScript</span><span class="stack-tag">Supabase</span><span class="stack-tag">Tailwind</span></div>
       <span class="proj-link">View Live ↗</span>
     </a>
-
-    <a href="https://github.com/devg-builds" target="_blank" class="proj-card reveal">
-      <div class="proj-card-top">
-        <span class="proj-icon">🤖</span>
-        <span class="proj-type">AI · Python</span>
-      </div>
+    <a href="https://github.com/devg-builds" target="_blank" class="proj-card reveal d1">
+      <div class="proj-card-top"><span class="proj-icon">🤖</span><span class="proj-type">AI · Python</span></div>
       <div class="proj-name">AI Study Planner</div>
-      <p class="proj-desc">An adaptive scheduling engine that evaluates academic deadlines, constraints, and learning behaviours to dynamically optimise study routines.</p>
-      <div class="proj-stack">
-        <span class="stack-tag">Python</span>
-        <span class="stack-tag">Flask</span>
-        <span class="stack-tag">NoSQL</span>
-      </div>
-      <span class="proj-link">View on GitHub ↗</span>
+      <p class="proj-desc">Adaptive scheduling engine evaluating academic deadlines, constraints, and learning behaviours to optimise study routines.</p>
+      <div class="proj-stack"><span class="stack-tag">Python</span><span class="stack-tag">Flask</span><span class="stack-tag">NoSQL</span></div>
+      <span class="proj-link">GitHub ↗</span>
     </a>
-
-    <a href="#" class="proj-card reveal">
-      <div class="proj-card-top">
-        <span class="proj-icon">🛰️</span>
-        <span class="proj-type">Research · Physics</span>
-      </div>
-      <div class="proj-name">Satellite Orbital Simulation</div>
-      <p class="proj-desc">Independent research and computational modelling studying how small velocity changes influence satellite trajectory shifts in Low Earth Orbit.</p>
-      <div class="proj-stack">
-        <span class="stack-tag">Physics</span>
-        <span class="stack-tag">Orbital Mechanics</span>
-        <span class="stack-tag">Research Paper</span>
-      </div>
-      <span class="proj-link">Read Paper ↗</span>
+    <a href="#research" class="proj-card reveal d2">
+      <div class="proj-card-top"><span class="proj-icon">🛰️</span><span class="proj-type">Research · Physics</span></div>
+      <div class="proj-name">Orbital Mechanics Simulation</div>
+      <p class="proj-desc">Two independent research papers on LEO satellite dynamics — from simple Δv analysis to a full multi-force perturbation framework currently in peer review.</p>
+      <div class="proj-stack"><span class="stack-tag">Physics</span><span class="stack-tag">RK4</span><span class="stack-tag">NHSJS</span></div>
+      <span class="proj-link">Read Research ↗</span>
     </a>
-
-    <a href="#" class="proj-card reveal">
-      <div class="proj-card-top">
-        <span class="proj-icon">🚗</span>
-        <span class="proj-type">Robotics · Hardware</span>
-      </div>
+    <a href="#" class="proj-card reveal d3">
+      <div class="proj-card-top"><span class="proj-icon">🚗</span><span class="proj-type">Robotics · Hardware</span></div>
       <div class="proj-name">Cypher Nova</div>
-      <p class="proj-desc">Autonomous sensor-based vehicle capable of real-time obstacle detection and navigation. Exhibited at DPS Faridabad Annual Science Fest — Certificate of Achievement.</p>
-      <div class="proj-stack">
-        <span class="stack-tag">Robotics</span>
-        <span class="stack-tag">Sensor Arrays</span>
-        <span class="stack-tag">Hardware</span>
-      </div>
+      <p class="proj-desc">Autonomous sensor-based vehicle for real-time obstacle detection and navigation. Exhibited at DPS Faridabad Science Fest — Certificate of Achievement.</p>
+      <div class="proj-stack"><span class="stack-tag">Robotics</span><span class="stack-tag">Sensors</span><span class="stack-tag">Hardware</span></div>
       <span class="proj-link">Science Fest 2025 ↗</span>
     </a>
-
+  </div>
   </div>
 </section>
 
 <!-- CREDENTIALS -->
 <section id="credentials">
-  <div class="section-label">04 — Credentials</div>
+  <div class="section-label reveal">05 — Credentials</div>
   <h2 class="section-title reveal">Verified achievements.</h2>
-  <div class="cred-grid reveal">
-
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Google Cloud Arcade Global Rank #1</span></div>
-      <div class="cred-issuer">Google Cloud Skills Boost · May 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">NCC 'A' Certificate — Navy Wing</span></div>
-      <div class="cred-issuer">National Cadet Corps, India · 2022–2024</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Neo4j Certified Professional</span></div>
-      <div class="cred-issuer">Neo4j GraphAcademy · July 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Generative AI for All</span></div>
-      <div class="cred-issuer">Infosys Springboard · August 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Python Programming — Grade A+</span></div>
-      <div class="cred-issuer">CodeFobe · March 2026</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Implement CI/CD Pipelines on Google Cloud</span></div>
-      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Deploy Kubernetes Applications on Google Cloud</span></div>
-      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Mitigate Threats with Security Command Center</span></div>
-      <div class="cred-issuer">Google Cloud Skills Boost · May 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Build a Secure Google Cloud Network</span></div>
-      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Explore Generative AI with Gemini API (Vertex AI)</span></div>
-      <div class="cred-issuer">Google Cloud Skills Boost · 2025</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Silver Medal — U10, 4th North India GOJU RYU Championship</span></div>
-      <div class="cred-issuer">Goju Ryu Karate Academy · Nov 2017</div>
-    </div>
-    <div class="cred-card">
-      <div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Gold Medal — Star Performer</span></div>
-      <div class="cred-issuer">Abacus Academy · Aug 2016</div>
-    </div>
-
+  <div class="cred-grid">
+    <div class="cred-card reveal"><div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Google Cloud Arcade Global Rank #1</span></div><div class="cred-issuer">Google Cloud Skills Boost · May 2025</div></div>
+    <div class="cred-card reveal d1"><div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">NCC 'A' Certificate — Navy Wing</span></div><div class="cred-issuer">National Cadet Corps, India · 2022–2024</div></div>
+    <div class="cred-card reveal d2"><div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Neo4j Certified Professional</span></div><div class="cred-issuer">Neo4j GraphAcademy · July 2025</div></div>
+    <div class="cred-card reveal d3"><div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Generative AI for All</span></div><div class="cred-issuer">Infosys Springboard · August 2025</div></div>
+    <div class="cred-card reveal"><div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Python Programming — Grade A+</span></div><div class="cred-issuer">CodeFobe · March 2026</div></div>
+    <div class="cred-card reveal d1"><div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Implement CI/CD Pipelines on Google Cloud</span></div><div class="cred-issuer">Google Cloud Skills Boost · 2025</div></div>
+    <div class="cred-card reveal d2"><div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Deploy Kubernetes Applications on Google Cloud</span></div><div class="cred-issuer">Google Cloud Skills Boost · 2025</div></div>
+    <div class="cred-card reveal d3"><div class="cred-top"><span class="cred-dot cyan"></span><span class="cred-name">Mitigate Threats — Security Command Center</span></div><div class="cred-issuer">Google Cloud Skills Boost · May 2025</div></div>
+    <div class="cred-card reveal"><div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Build a Secure Google Cloud Network</span></div><div class="cred-issuer">Google Cloud Skills Boost · 2025</div></div>
+    <div class="cred-card reveal d1"><div class="cred-top"><span class="cred-dot blue"></span><span class="cred-name">Explore Generative AI with Gemini API (Vertex AI)</span></div><div class="cred-issuer">Google Cloud Skills Boost · 2025</div></div>
+    <div class="cred-card reveal d2"><div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Silver Medal — North India GOJU RYU Karate</span></div><div class="cred-issuer">Goju Ryu Karate Academy · Nov 2017</div></div>
+    <div class="cred-card reveal d3"><div class="cred-top"><span class="cred-dot gold"></span><span class="cred-name">Gold Medal — Star Performer, Abacus</span></div><div class="cred-issuer">Abacus Academy · Aug 2016</div></div>
   </div>
 </section>
 
@@ -826,40 +657,95 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <span>© 2026 Devansh Gupta</span>
   <span>DPS Faridabad · Class 11 PCM-CS · Faridabad, India</span>
 </footer>
 
 <script>
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-        }, i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(el => observer.observe(el));
+// CURSOR
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(anim);})();
 
-  // Active nav link
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--white)' : '';
-    });
+// PROGRESS BAR
+const pb=document.getElementById('prog');
+window.addEventListener('scroll',()=>{
+  pb.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+});
+
+// NAV SCROLL + ACTIVE
+const nav=document.getElementById('nav');
+const nls=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>60);
+  let cur2='';
+  document.querySelectorAll('section[id]').forEach(s=>{
+    if(window.scrollY>=s.offsetTop-140)cur2=s.id;
   });
-</script>
+  nls.forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+cur2);
+  });
+});
 
+// REVEAL
+const ro=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('visible'),i*70);
+      ro.unobserve(e.target);
+    }
+  });
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// COUNTER
+const co=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const t=+e.target.dataset.count;let c=0;const s=t/50;
+      const tm=setInterval(()=>{
+        c=Math.min(c+s,t);e.target.textContent=Math.floor(c);
+        if(c>=t)clearInterval(tm);
+      },25);
+      co.unobserve(e.target);
+    }
+  });
+});
+document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+
+// SKILL BARS
+const bo=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.width=e.target.dataset.w+'%';
+      bo.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('.sk-fill').forEach(b=>bo.observe(b));
+
+// CARD GLOW ON MOUSEMOVE
+document.querySelectorAll('.proj-card,.cred-card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    c.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+});
+
+// HERO GHOST PARALLAX
+const ghost=document.querySelector('.hero-ghost');
+window.addEventListener('scroll',()=>{
+  if(ghost)ghost.style.transform=
+    `translate(-50%,calc(-50% + ${window.scrollY*.12}px))`;
+});
+</script>
 </body>
 </html>
