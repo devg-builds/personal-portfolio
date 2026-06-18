@@ -335,6 +335,7 @@
   .reveal.visible{opacity:1;transform:none;}
   .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}
   .d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+  .d5{transition-delay:.5s;}
 
   @media(max-width:768px){
     nav{padding:1rem 1.5rem;}
@@ -422,7 +423,7 @@
     <span class="mq-item"><span class="mq-dot">●</span>111+ GCP Badges</span>
     <span class="mq-item"><span class="mq-dot">●</span>NCC Navy Wing</span>
     <span class="mq-item"><span class="mq-dot">●</span>Neo4j Certified</span>
-    <span class="mq-item"><span class="mq-dot">●</span>sci-MI Applicant</span>
+    <span class="mq-item"><span class="mq-dot">●</span>sci-MI CS Mentee</span>
     <span class="mq-item"><span class="mq-dot">●</span>DPS Faridabad Student Council</span>
     <span class="mq-item"><span class="mq-dot">●</span>Google Cloud Arcade Rank #1</span>
     <span class="mq-item"><span class="mq-dot">●</span>Gurugram Police Cyber Ambassador</span>
@@ -431,7 +432,7 @@
     <span class="mq-item"><span class="mq-dot">●</span>111+ GCP Badges</span>
     <span class="mq-item"><span class="mq-dot">●</span>NCC Navy Wing</span>
     <span class="mq-item"><span class="mq-dot">●</span>Neo4j Certified</span>
-    <span class="mq-item"><span class="mq-dot">●</span>sci-MI Applicant</span>
+    <span class="mq-item"><span class="mq-dot">●</span>sci-MI CS Mentee</span>
     <span class="mq-item"><span class="mq-dot">●</span>DPS Faridabad Student Council</span>
   </div>
 </div>
@@ -532,11 +533,20 @@
       <div class="tl-card">
         <div class="tl-head"><div class="tl-title">Cyber Security Intern — Cyber Ambassador</div><div class="tl-date">May 2026 — Present</div></div>
         <div class="tl-org">Gurugram Police, Haryana Government · 13th GPCSS 2026</div>
-        <div class="tl-desc">Selected as one of 8 students nationally for the 13th Gurugram Police Cyber Security Summer Internship 2026. Mentored by Dr. Rakshit Tandon. Trained in cyber threat prevention, digital safety, and cyber crime intervention frameworks.</div>
+        <div class="tl-desc">Selected as one of 8 students nationally for the 13th Gurugram Police Cyber Security Summer Internship 2026. Mentored by Dr. Rakshit Tandon. Trained in cyber threat prevention, digital safety, and cyber crime intervention frameworks. Built SafeTag — a GPS-integrated smart ID card system with Node.js/Express backend, Firebase Realtime DB, JWT authentication, and AES-128 encryption — as the capstone project.</div>
         <div class="tl-badges"><span class="tl-badge g">● Active</span><span class="tl-badge gold">1 of 8 Selected</span><span class="tl-badge b">GPCSS 2026</span></div>
       </div>
     </div>
     <div class="tl-item reveal d2">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-head"><div class="tl-title">Computer Science Mentee</div><div class="tl-date">2026 — Present</div></div>
+        <div class="tl-org">sci-MI · Asynchronous CS Mentorship Program</div>
+        <div class="tl-desc">Selected for sci-MI's national Computer Science Mentorship Program (asynchronous track). Building a technical project for presentation at the program's symposium under mentorship guidance.</div>
+        <div class="tl-badges"><span class="tl-badge g">● Active</span><span class="tl-badge b">CS Mentorship</span></div>
+      </div>
+    </div>
+    <div class="tl-item reveal d3">
       <div class="tl-dot"></div>
       <div class="tl-card">
         <div class="tl-head"><div class="tl-title">Cyber Security Intern</div><div class="tl-date">May 15–30, 2026</div></div>
@@ -545,7 +555,7 @@
         <div class="tl-badges"><span class="tl-badge b">15-Day Programme</span><span class="tl-badge c">Certified</span></div>
       </div>
     </div>
-    <div class="tl-item reveal d3">
+    <div class="tl-item reveal d4">
       <div class="tl-dot"></div>
       <div class="tl-card">
         <div class="tl-head"><div class="tl-title">Google Cloud Arcade — Global Rank #1</div><div class="tl-date">Apr — Jul 2025</div></div>
@@ -554,7 +564,7 @@
         <div class="tl-badges"><span class="tl-badge gold">Rank #1 Global</span><span class="tl-badge b">111+ Badges</span><span class="tl-badge c">Champion Milestone</span></div>
       </div>
     </div>
-    <div class="tl-item reveal d4">
+    <div class="tl-item reveal d5">
       <div class="tl-dot"></div>
       <div class="tl-card">
         <div class="tl-head"><div class="tl-title">Student Council Member</div><div class="tl-date">2025 — Present</div></div>
@@ -592,28 +602,35 @@
   <div class="section-label reveal">04 — Projects</div>
   <h2 class="section-title reveal">Things I've actually built.</h2>
   <div class="projects-grid">
-    <a href="https://devg-builds.github.io/covara-website/" target="_blank" class="proj-card reveal">
+    <a href="https://github.com/devg-builds" target="_blank" class="proj-card reveal">
+      <div class="proj-card-top"><span class="proj-icon">🔐</span><span class="proj-type">Full-Stack · Security</span></div>
+      <div class="proj-name">SafeTag</div>
+      <p class="proj-desc">GPS-integrated smart ID card system for real-time student tracking across campus, bus commutes, and bus stops. Node.js/Express backend, Firebase Realtime DB, JWT + RBAC authentication, AES-128 RFID encryption, Leaflet.js live mapping, and real-time threat simulation. Capstone project — GPCSSI 2026.</p>
+      <div class="proj-stack"><span class="stack-tag">Node.js</span><span class="stack-tag">Express</span><span class="stack-tag">Firebase</span><span class="stack-tag">JWT</span><span class="stack-tag">RBAC</span></div>
+      <span class="proj-link">GitHub ↗</span>
+    </a>
+    <a href="https://devg-builds.github.io/covara-website/" target="_blank" class="proj-card reveal d1">
       <div class="proj-card-top"><span class="proj-icon">🌐</span><span class="proj-type">Full-Stack · Live</span></div>
       <div class="proj-name">Covara Global</div>
       <p class="proj-desc">Live web design services platform. Custom-built and deployed using JavaScript, Supabase, and Tailwind CSS.</p>
       <div class="proj-stack"><span class="stack-tag">JavaScript</span><span class="stack-tag">Supabase</span><span class="stack-tag">Tailwind</span></div>
       <span class="proj-link">View Live ↗</span>
     </a>
-    <a href="https://github.com/devg-builds" target="_blank" class="proj-card reveal d1">
+    <a href="https://github.com/devg-builds" target="_blank" class="proj-card reveal d2">
       <div class="proj-card-top"><span class="proj-icon">🤖</span><span class="proj-type">AI · Python</span></div>
       <div class="proj-name">AI Study Planner</div>
       <p class="proj-desc">Adaptive scheduling engine evaluating academic deadlines, constraints, and learning behaviours to optimise study routines.</p>
       <div class="proj-stack"><span class="stack-tag">Python</span><span class="stack-tag">Flask</span><span class="stack-tag">NoSQL</span></div>
       <span class="proj-link">GitHub ↗</span>
     </a>
-    <a href="#research" class="proj-card reveal d2">
+    <a href="#research" class="proj-card reveal d3">
       <div class="proj-card-top"><span class="proj-icon">🛰️</span><span class="proj-type">Research · Physics</span></div>
       <div class="proj-name">Orbital Mechanics Simulation</div>
       <p class="proj-desc">Two independent research papers on LEO satellite dynamics — from simple Δv analysis to a full multi-force perturbation framework currently in peer review.</p>
       <div class="proj-stack"><span class="stack-tag">Physics</span><span class="stack-tag">RK4</span><span class="stack-tag">NHSJS</span></div>
       <span class="proj-link">Read Research ↗</span>
     </a>
-    <a href="#" class="proj-card reveal d3">
+    <a href="#" class="proj-card reveal d4">
       <div class="proj-card-top"><span class="proj-icon">🚗</span><span class="proj-type">Robotics · Hardware</span></div>
       <div class="proj-name">Cypher Nova</div>
       <p class="proj-desc">Autonomous sensor-based vehicle for real-time obstacle detection and navigation. Exhibited at DPS Faridabad Science Fest — Certificate of Achievement.</p>
