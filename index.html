@@ -248,6 +248,9 @@
     background:#F5A623;animation:pulse 2s infinite;}
   .r-status.done{background:rgba(0,194,100,.08);border:1px solid rgba(0,194,100,.25);color:#4ddb90;}
   .r-status.done::before{content:'✓';color:#4ddb90;font-size:.65rem;}
+  .r-status.progress{background:rgba(0,194,212,.08);border:1px solid rgba(0,194,212,.3);color:var(--cyan);}
+  .r-status.progress::before{content:'';width:5px;height:5px;border-radius:50%;
+    background:var(--cyan);animation:pulse 2s infinite;}
   .r-title{font-family:'Syne',sans-serif;font-size:1.02rem;font-weight:600;
     color:var(--white);margin-bottom:.4rem;line-height:1.4;}
   .r-journal{font-size:.82rem;color:var(--blue2);margin-bottom:.7rem;}
@@ -329,10 +332,41 @@
   footer a{color:var(--muted);text-decoration:none;}
   footer a:hover{color:var(--white);}
 
-  /* REVEAL */
-  .reveal{opacity:0;transform:translateY(28px);
-    transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
-  .reveal.visible{opacity:1;transform:none;}
+  /* REVEAL — blur-warp entrance */
+  .reveal{opacity:0;transform:translateY(28px) scale(.985);filter:blur(5px);
+    transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),filter .6s ease;}
+  .reveal.visible{opacity:1;transform:none;filter:blur(0);}
+
+  /* HERO PARTICLE NETWORK */
+  #net{position:absolute;inset:0;width:100%;height:100%;z-index:0;
+    pointer-events:none;opacity:.55;}
+
+  /* HERO NAME GLITCH — RGB split */
+  .hero-name.glitching{animation:glitchShift .4s steps(4) both;}
+  @keyframes glitchShift{
+    0%,100%{text-shadow:none;transform:none;}
+    20%{text-shadow:-4px 0 var(--cyan),4px 0 var(--blue);transform:translateX(2px) skewX(3deg);}
+    40%{text-shadow:4px 0 var(--cyan),-4px 0 var(--blue);transform:translateX(-2px) skewX(-3deg);}
+    60%{text-shadow:-3px 0 var(--blue2),3px 0 var(--cyan);transform:translateX(1px);}
+    80%{text-shadow:2px 0 var(--cyan),-2px 0 var(--blue);}
+  }
+
+  /* TIMELINE — line draws itself + dots ignite on scroll */
+  .timeline::after{content:'';position:absolute;left:20px;top:8px;
+    width:1px;height:var(--tlp,0%);max-height:calc(100% - 16px);
+    background:linear-gradient(180deg,var(--cyan),var(--blue));
+    box-shadow:0 0 10px rgba(0,194,212,.5);}
+  .tl-item.passed .tl-dot{background:var(--blue);
+    box-shadow:0 0 14px rgba(26,110,255,.7);}
+
+  /* MARQUEE — scroll-velocity skew */
+  .marquee-wrap{will-change:transform;}
+
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;filter:none;}
+    #net{display:none;}
+    .hero-name.glitching{animation:none;}
+  }
   .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}
   .d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
   .d5{transition-delay:.5s;}
@@ -372,17 +406,18 @@
 
 <!-- HERO -->
 <section id="hero">
+  <canvas id="net" aria-hidden="true"></canvas>
   <div class="hero-ghost" aria-hidden="true">DEVG</div>
-  <div class="hero-tag">CTO @ Finspire · Cyber Security Intern · NHSJS Peer Review</div>
+  <div class="hero-tag">Research Team Lead @ sci-MI · Cyber Security · NHSJS Final Review</div>
   <h1 class="hero-name">
     <span class="line"><span>Devansh</span></span>
     <span class="line"><span><span class="accent">Gupta.</span></span></span>
   </h1>
   <p class="hero-role">
-    <strong>CTO @ Finspire</strong> &nbsp;·&nbsp; Cloud &amp; Cyber Security &nbsp;·&nbsp; Independent Physics Researcher &nbsp;·&nbsp; DPS Faridabad
+    <strong>Research Team Lead @ sci-MI</strong> &nbsp;·&nbsp; Cloud &amp; Cyber Security &nbsp;·&nbsp; Independent Researcher &nbsp;·&nbsp; DPS Faridabad
   </p>
   <p class="hero-desc">
-    Class 11 CS student building at the intersection of cloud infrastructure, cyber security, and physics research. Two internships. Two research papers. One mission — build things that matter.
+    Class 11 CS student building at the intersection of cloud infrastructure, cyber security, and research. Leading an international research team. Three research papers. One mission — build things that matter.
   </p>
   <div class="hero-ctas">
     <a href="#experience" class="btn-primary">View Experience ↓</a>
@@ -403,7 +438,7 @@
       <div class="stat-label">Cyber Security Internships</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num"><span>2</span></div>
+      <div class="stat-num"><span>3</span></div>
       <div class="stat-label">Research Papers</div>
     </div>
     <div class="stat-item">
@@ -418,21 +453,21 @@
   <div class="marquee-track">
     <span class="mq-item"><span class="mq-dot">●</span>Google Cloud Arcade Rank #1</span>
     <span class="mq-item"><span class="mq-dot">●</span>Gurugram Police Cyber Ambassador</span>
-    <span class="mq-item"><span class="mq-dot">●</span>CTO @ Finspire</span>
-    <span class="mq-item"><span class="mq-dot">●</span>NHSJS Peer Review Active</span>
+    <span class="mq-item"><span class="mq-dot">●</span>sci-MI Research Team Lead</span>
+    <span class="mq-item"><span class="mq-dot">●</span>NHSJS Final Review</span>
     <span class="mq-item"><span class="mq-dot">●</span>111+ GCP Badges</span>
     <span class="mq-item"><span class="mq-dot">●</span>NCC Navy Wing</span>
     <span class="mq-item"><span class="mq-dot">●</span>Neo4j Certified</span>
-    <span class="mq-item"><span class="mq-dot">●</span>sci-MI CS Mentee</span>
+    <span class="mq-item"><span class="mq-dot">●</span>GCAF '26 Facilitator</span>
     <span class="mq-item"><span class="mq-dot">●</span>DPS Faridabad Student Council</span>
     <span class="mq-item"><span class="mq-dot">●</span>Google Cloud Arcade Rank #1</span>
     <span class="mq-item"><span class="mq-dot">●</span>Gurugram Police Cyber Ambassador</span>
-    <span class="mq-item"><span class="mq-dot">●</span>CTO @ Finspire</span>
-    <span class="mq-item"><span class="mq-dot">●</span>NHSJS Peer Review Active</span>
+    <span class="mq-item"><span class="mq-dot">●</span>sci-MI Research Team Lead</span>
+    <span class="mq-item"><span class="mq-dot">●</span>NHSJS Final Review</span>
     <span class="mq-item"><span class="mq-dot">●</span>111+ GCP Badges</span>
     <span class="mq-item"><span class="mq-dot">●</span>NCC Navy Wing</span>
     <span class="mq-item"><span class="mq-dot">●</span>Neo4j Certified</span>
-    <span class="mq-item"><span class="mq-dot">●</span>sci-MI CS Mentee</span>
+    <span class="mq-item"><span class="mq-dot">●</span>GCAF '26 Facilitator</span>
     <span class="mq-item"><span class="mq-dot">●</span>DPS Faridabad Student Council</span>
   </div>
 </div>
@@ -445,13 +480,14 @@
     <div class="reveal">
       <div class="about-text">
         <p>I didn't choose Computer Science because someone told me to. I chose it because I genuinely couldn't stay away from it. Started young — competitive Karate at regional level, Abacus at national level — disciplines that built focus and precision that quietly followed me into technology.</p>
-        <p>By 4th grade, computers had me hooked. That curiosity compounded into something real — 111+ Google Cloud skill badges, two independent research papers, two Cyber Security internships, and a CTO role — all before finishing Class 11.</p>
-        <p>Right now I'm the <strong>CTO at Finspire</strong> — a non-profit building financial literacy tools for underprivileged students across India. I also believe technology without perspective is incomplete — Model United Nations and NCC Navy Wing are how I learn to lead and think globally.</p>
+        <p>By 4th grade, computers had me hooked. That curiosity compounded into something real — 111+ Google Cloud skill badges, three research papers, two Cyber Security internships, and a CTO role — all before finishing Class 11.</p>
+        <p>Right now I lead an <strong>international research team at sci-MI</strong> — teammates in the US and Kyrgyzstan — investigating what makes vulnerabilities invisible to AI-based code analyzers. I'm also bringing cyber security education to Class 9–10 students at my school. Technology without perspective is incomplete — Model United Nations and NCC Navy Wing are how I learn to lead and think globally.</p>
       </div>
       <div class="live-strip">
-        <span class="live-badge">CTO @ Finspire</span>
+        <span class="live-badge">Research Team Lead · sci-MI</span>
         <span class="live-badge">Cyber Ambassador · Gurugram Police</span>
-        <span class="live-badge">NHSJS Peer Review</span>
+        <span class="live-badge">NHSJS · Final Decision Pending</span>
+        <span class="live-badge">GCAF '26 Facilitator</span>
       </div>
       <div class="skills-wrap">
         <div class="sk-label-row">Technical Proficiency</div>
@@ -481,7 +517,7 @@
       <div class="about-card">
         <div class="about-card-item">
           <span class="about-card-label">Current Role</span>
-          <span class="about-card-value">CTO — Finspire (EdTech Non-Profit)</span>
+          <span class="about-card-value">Research Team Lead — sci-MI</span>
         </div>
         <div class="about-card-divider"></div>
         <div class="about-card-item">
@@ -522,10 +558,10 @@
     <div class="tl-item reveal">
       <div class="tl-dot"></div>
       <div class="tl-card">
-        <div class="tl-head"><div class="tl-title">Chief Technology Officer</div><div class="tl-date">May 2026 — Present</div></div>
-        <div class="tl-org">Finspire — EdTech Non-Profit</div>
-        <div class="tl-desc">Leading the complete technology vision and product roadmap for a non-profit making financial literacy accessible to underprivileged students across India. Building digital infrastructure, learning platform, and student-facing applications from the ground up.</div>
-        <div class="tl-badges"><span class="tl-badge g">● Active</span><span class="tl-badge b">EdTech</span><span class="tl-badge b">Non-Profit</span></div>
+        <div class="tl-head"><div class="tl-title">Research Team Leader</div><div class="tl-date">2026 — Present</div></div>
+        <div class="tl-org">sci-MI · CS Mentorship &amp; Research Program</div>
+        <div class="tl-desc">Promoted from mentee to Team Leader in sci-MI's national CS program. Leading an international three-member team — with teammates from Florida (US) and Kyrgyzstan — authoring a research paper: “What Makes a Vulnerability Invisible to AI Tools?”, investigating which structural code patterns cause vulnerabilities to be missed by AI-based code analyzers.</div>
+        <div class="tl-badges"><span class="tl-badge g">● Active</span><span class="tl-badge gold">Team Lead</span><span class="tl-badge b">AI Security Research</span></div>
       </div>
     </div>
     <div class="tl-item reveal d1">
@@ -540,10 +576,19 @@
     <div class="tl-item reveal d2">
       <div class="tl-dot"></div>
       <div class="tl-card">
-        <div class="tl-head"><div class="tl-title">Computer Science Mentee</div><div class="tl-date">2026 — Present</div></div>
-        <div class="tl-org">sci-MI · Asynchronous CS Mentorship Program</div>
-        <div class="tl-desc">Selected for sci-MI's national Computer Science Mentorship Program (asynchronous track). Building a technical project for presentation at the program's symposium under mentorship guidance.</div>
-        <div class="tl-badges"><span class="tl-badge g">● Active</span><span class="tl-badge b">CS Mentorship</span></div>
+        <div class="tl-head"><div class="tl-title">Cyber Security Educator</div><div class="tl-date">2026 — Upcoming</div></div>
+        <div class="tl-org">Delhi Public School, Faridabad · Student-Led Sessions</div>
+        <div class="tl-desc">Designing and delivering cyber security awareness sessions for Class 9 and 10 students — digital safety, threat awareness, and safe online practices — built on training from the Gurugram Police cyber internship.</div>
+        <div class="tl-badges"><span class="tl-badge c">Teaching</span><span class="tl-badge b">Cyber Awareness</span></div>
+      </div>
+    </div>
+    <div class="tl-item reveal d2">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-head"><div class="tl-title">Chief Technology Officer</div><div class="tl-date">May 2026 — Jul 2026</div></div>
+        <div class="tl-org">Finspire — EdTech Non-Profit</div>
+        <div class="tl-desc">Led the technology vision and product roadmap for a non-profit making financial literacy accessible to underprivileged students across India. Stepped down in July 2026 as the organisation paused operational scaling.</div>
+        <div class="tl-badges"><span class="tl-badge b">EdTech</span><span class="tl-badge b">Non-Profit</span></div>
       </div>
     </div>
     <div class="tl-item reveal d3">
@@ -558,10 +603,10 @@
     <div class="tl-item reveal d4">
       <div class="tl-dot"></div>
       <div class="tl-card">
-        <div class="tl-head"><div class="tl-title">Google Cloud Arcade — Global Rank #1</div><div class="tl-date">Apr — Jul 2025</div></div>
-        <div class="tl-org">Google Cloud Arcade Facilitator Program (GCAF Cohort 1)</div>
-        <div class="tl-desc">Achieved Global Rank #1 on the leaderboard competing against participants 4+ years older. Completed 111+ Skill Badges across Cloud Engineering, DevOps, Kubernetes, BigQuery ML, Vertex AI, Firebase, Security Command Center, and CI/CD. Earned Champion Milestone.</div>
-        <div class="tl-badges"><span class="tl-badge gold">Rank #1 Global</span><span class="tl-badge b">111+ Badges</span><span class="tl-badge c">Champion Milestone</span></div>
+        <div class="tl-head"><div class="tl-title">Google Cloud Arcade — Global Rank #1</div><div class="tl-date">Apr — Jul 2025 · Re-selected 2026</div></div>
+        <div class="tl-org">Google Cloud Arcade Facilitator Program (GCAF)</div>
+        <div class="tl-desc">Achieved Global Rank #1 on the leaderboard competing against participants 4+ years older. Completed 111+ Skill Badges across Cloud Engineering, DevOps, Kubernetes, BigQuery ML, Vertex AI, Firebase, Security Command Center, and CI/CD. Earned Champion Milestone — and selected again for the GCAF 2026 cohort.</div>
+        <div class="tl-badges"><span class="tl-badge gold">Rank #1 Global</span><span class="tl-badge b">111+ Badges</span><span class="tl-badge c">Champion Milestone</span><span class="tl-badge g">● GCAF '26 Selected</span></div>
       </div>
     </div>
     <div class="tl-item reveal d5">
@@ -580,15 +625,21 @@
 <!-- RESEARCH -->
 <section id="research">
   <div class="section-label reveal">03 — Research</div>
-  <h2 class="section-title reveal">Independent academic work.</h2>
+  <h2 class="section-title reveal">Independent &amp; team research.</h2>
   <p class="reveal" style="color:var(--muted);max-width:520px;margin-bottom:2.5rem;font-size:1rem;">Physics and Computer Science aren't separate disciplines to me — they're two languages describing the same world.</p>
   <div class="research-card reveal">
-    <div class="r-status review">Under Formal Peer Review</div>
-    <div class="r-title">Orbital Perturbation Dynamics in Low Earth Orbit: A Comprehensive Multi-Force Framework for Satellite Lifetime Prediction and Trajectory Analysis</div>
-    <div class="r-journal">National High School Journal of Science (NHSJS) · Submitted June 2026</div>
-    <div class="r-desc">A multi-force computational framework extending beyond the two-body problem — incorporating J₂ perturbation, atmospheric drag, solar radiation pressure, and luni-solar gravity. Integrates RK4 numerical integration with three LEO case studies. Currently undergoing formal peer review — standard 8-week timeline.</div>
+    <div class="r-status progress">In Progress — Team Research</div>
+    <div class="r-title">What Makes a Vulnerability Invisible to AI Tools? Structural Patterns Behind AI Code Analyzer Blind Spots</div>
+    <div class="r-journal">sci-MI Research Program · Team Leader — International Team (US · Kyrgyzstan) · 2026</div>
+    <div class="r-desc">Leading a three-member international research team investigating which structural code patterns cause security vulnerabilities to be missed by AI-based code analyzers — mapping the blind spots of automated security tooling in the age of AI-assisted development.</div>
   </div>
   <div class="research-card reveal d1">
+    <div class="r-status review">Revisions Resolved · Final Decision Pending</div>
+    <div class="r-title">Orbital Perturbation Dynamics in Low Earth Orbit: A Comprehensive Multi-Force Framework for Satellite Lifetime Prediction and Trajectory Analysis</div>
+    <div class="r-journal">National High School Journal of Science (NHSJS) · Submitted June 2026</div>
+    <div class="r-desc">A multi-force computational framework extending beyond the two-body problem — incorporating J₂ perturbation, atmospheric drag, solar radiation pressure, and luni-solar gravity. Integrates RK4 numerical integration with three LEO case studies. Cleared major and minor revision rounds with the NHSJS editorial team — now awaiting the journal's final publication decision.</div>
+  </div>
+  <div class="research-card reveal d2">
     <div class="r-status done">Completed — Class 10</div>
     <div class="r-title">Orbital Mechanics to Study How Small Velocity Changes Shift Satellite Trajectories</div>
     <div class="r-journal">Independent Student Researcher · 2024</div>
@@ -626,7 +677,7 @@
     <a href="#research" class="proj-card reveal d3">
       <div class="proj-card-top"><span class="proj-icon">🛰️</span><span class="proj-type">Research · Physics</span></div>
       <div class="proj-name">Orbital Mechanics Simulation</div>
-      <p class="proj-desc">Two independent research papers on LEO satellite dynamics — from simple Δv analysis to a full multi-force perturbation framework currently in peer review.</p>
+      <p class="proj-desc">Two independent research papers on LEO satellite dynamics — from simple Δv analysis to a full multi-force perturbation framework awaiting NHSJS's final publication decision.</p>
       <div class="proj-stack"><span class="stack-tag">Physics</span><span class="stack-tag">RK4</span><span class="stack-tag">NHSJS</span></div>
       <span class="proj-link">Read Research ↗</span>
     </a>
@@ -763,6 +814,118 @@ window.addEventListener('scroll',()=>{
   if(ghost)ghost.style.transform=
     `translate(-50%,calc(-50% + ${window.scrollY*.12}px))`;
 });
+
+// ===== TECH SCROLL FX =====
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+
+// TEXT SCRAMBLE — section titles decode into place
+const CHARS='!<>-_\\/[]{}=+*^?#01';
+function scramble(el){
+  const orig=el.dataset.orig||el.textContent;el.dataset.orig=orig;
+  let frame=0;const total=orig.length*3;
+  (function tick(){
+    let out='';
+    for(let i=0;i<orig.length;i++){
+      if(i<frame/3||orig[i]===' ')out+=orig[i];
+      else out+=CHARS[Math.floor(Math.random()*CHARS.length)];
+    }
+    el.textContent=out;
+    if(frame++<total)requestAnimationFrame(tick);else el.textContent=orig;
+  })();
+}
+const so=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){scramble(e.target);so.unobserve(e.target);}});
+},{threshold:.4});
+document.querySelectorAll('.section-title,.section-label').forEach(el=>so.observe(el));
+
+// HERO NAME — periodic RGB-split glitch
+const hn=document.querySelector('.hero-name');
+setInterval(()=>{
+  hn.classList.add('glitching');
+  setTimeout(()=>hn.classList.remove('glitching'),420);
+},3800);
+
+// SCROLL VELOCITY → marquee skew warp (loop sleeps when idle)
+const mqWrap=document.querySelector('.marquee-wrap');
+let lastY=window.scrollY,vel=0,mqLive=false;
+function mq(){
+  vel*=.88;
+  if(Math.abs(vel)<.15){vel=0;mqWrap.style.transform='';mqLive=false;return;}
+  const v=Math.max(-12,Math.min(12,vel*.2));
+  mqWrap.style.transform=`skewX(${v}deg)`;
+  requestAnimationFrame(mq);
+}
+window.addEventListener('scroll',()=>{
+  vel+=window.scrollY-lastY;lastY=window.scrollY;
+  if(!mqLive){mqLive=true;requestAnimationFrame(mq);}
+});
+
+// TIMELINE — line draws + dots ignite as you scroll
+const tl=document.querySelector('.timeline');
+function drawTL(){
+  if(!tl)return;
+  const r=tl.getBoundingClientRect();
+  const p=Math.min(1,Math.max(0,(window.innerHeight*.72-r.top)/r.height));
+  tl.style.setProperty('--tlp',(p*100)+'%');
+  tl.querySelectorAll('.tl-item').forEach(it=>{
+    it.classList.toggle('passed',it.getBoundingClientRect().top<window.innerHeight*.72);
+  });
+}
+window.addEventListener('scroll',drawTL);drawTL();
+
+// 3D TILT — cards follow the mouse
+document.querySelectorAll('.proj-card,.cred-card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    const rx=((e.clientY-r.top)/r.height-.5)*-8;
+    const ry=((e.clientX-r.left)/r.width-.5)*8;
+    c.style.transform=`perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+  });
+  c.addEventListener('mouseleave',()=>{c.style.transform='';});
+});
+
+// HERO PARTICLE NETWORK — drifting constellation (only animates while hero is on screen)
+const cv=document.getElementById('net');
+if(cv){
+  const ctx=cv.getContext('2d');let W,H,heroVisible=true;
+  function sz(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;}
+  sz();window.addEventListener('resize',sz);
+  const N=innerWidth<768?24:48,pts=[];
+  for(let i=0;i<N;i++)pts.push({
+    x:Math.random(),y:Math.random(),
+    vx:(Math.random()-.5)*.0009,vy:(Math.random()-.5)*.0009
+  });
+  function draw(){
+    if(!heroVisible)return;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>1)p.vx*=-1;
+      if(p.y<0||p.y>1)p.vy*=-1;
+    });
+    for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){
+      const dx=(pts[i].x-pts[j].x)*W,dy=(pts[i].y-pts[j].y)*H,d=Math.hypot(dx,dy);
+      if(d<130){
+        ctx.strokeStyle=`rgba(26,110,255,${(1-d/130)*.16})`;
+        ctx.beginPath();ctx.moveTo(pts[i].x*W,pts[i].y*H);ctx.lineTo(pts[j].x*W,pts[j].y*H);ctx.stroke();
+      }
+    }
+    pts.forEach(p=>{
+      ctx.fillStyle='rgba(0,194,212,.45)';
+      ctx.beginPath();ctx.arc(p.x*W,p.y*H,1.4,0,7);ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      const was=heroVisible;heroVisible=e.isIntersecting;
+      if(heroVisible&&!was)requestAnimationFrame(draw);
+    });
+  }).observe(cv);
+  draw();
+}
+
+}
 </script>
 </body>
 </html>
